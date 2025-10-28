@@ -121,22 +121,32 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="mx-auto max-w-7xl space-y-8">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Family Dashboard</h1>
-            <p className="text-muted-foreground">Welcome back, {profile.display_name}!</p>
-          </div>
-          <div className="flex gap-2">
-            <Link to="/tasks/new">
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                New Task
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Family Dashboard</h1>
+              <p className="text-muted-foreground">Welcome back, {profile.display_name}!</p>
+            </div>
+            <div className="flex gap-2">
+              <Link to="/tasks/new">
+                <Button>
+                  <Plus className="mr-2 h-4 w-4" />
+                  New Task
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={signOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign Out
               </Button>
-            </Link>
-            <Button variant="outline" onClick={signOut}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
-            </Button>
+            </div>
+          </div>
+          
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            <Link to="/dashboard"><Button variant="secondary">Dashboard</Button></Link>
+            <Link to="/tasks"><Button variant="ghost">Tasks</Button></Link>
+            <Link to="/calendar"><Button variant="ghost">Calendar</Button></Link>
+            <Link to="/family"><Button variant="ghost">Family</Button></Link>
+            <Link to="/profile"><Button variant="ghost">Profile</Button></Link>
           </div>
         </div>
 
