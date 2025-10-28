@@ -66,8 +66,9 @@ export const useTaskMutations = () => {
   });
 
   const completeTask = useMutation({
-    mutationFn: async ({ taskId, userId }: { taskId: string; userId: string }) => {
-      const { data, error } = await supabase
+    mutationFn: async ({ taskId, userId, taskPoints }: { taskId: string; userId: string; taskPoints: number }) => {
+      // Update task as completed
+      const { data: taskData, error: taskError } = await supabase
         .from('tasks')
         .update({
           status: 'completed',
@@ -78,15 +79,34 @@ export const useTaskMutations = () => {
         .select()
         .single();
       
-      if (error) throw error;
-      return data;
+      if (taskError) throw taskError;
+
+      // Get user's current points
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('points')
+        .eq('id', userId)
+        .single();
+
+      if (profileError) throw profileError;
+
+      // Update user's points
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ points: (profile.points || 0) + taskPoints })
+        .eq('id', userId);
+
+      if (updateError) throw updateError;
+
+      return taskData;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      toast.success('🎉 Task completed!');
+      queryClient.invalidateQueries({ queryKey: ['profiles'] });
+      toast.success(`🎉 Görev tamamlandı! +${variables.taskPoints} puan kazandın!`);
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Failed to complete task');
+      toast.error(error.message || 'Görev tamamlanamadı');
     },
   });
 

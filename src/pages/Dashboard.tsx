@@ -28,6 +28,36 @@ const Dashboard = () => {
     if (profile?.family_id) {
       loadTasks();
       loadFamilyMembers();
+
+      // Realtime subscription for tasks and profiles
+      const tasksChannel = supabase
+        .channel('tasks-changes')
+        .on('postgres_changes', { 
+          event: '*', 
+          schema: 'public', 
+          table: 'tasks',
+          filter: `family_id=eq.${profile.family_id}` 
+        }, () => {
+          loadTasks();
+        })
+        .subscribe();
+
+      const profilesChannel = supabase
+        .channel('profiles-changes')
+        .on('postgres_changes', { 
+          event: 'UPDATE', 
+          schema: 'public', 
+          table: 'profiles',
+          filter: `family_id=eq.${profile.family_id}` 
+        }, () => {
+          loadFamilyMembers();
+        })
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(tasksChannel);
+        supabase.removeChannel(profilesChannel);
+      };
     }
   }, [profile]);
 

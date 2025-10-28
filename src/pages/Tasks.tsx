@@ -29,6 +29,23 @@ const Tasks = () => {
   useEffect(() => {
     if (profile?.family_id) {
       loadTasks();
+
+      // Realtime subscription for tasks
+      const tasksChannel = supabase
+        .channel('tasks-list-changes')
+        .on('postgres_changes', { 
+          event: '*', 
+          schema: 'public', 
+          table: 'tasks',
+          filter: `family_id=eq.${profile.family_id}` 
+        }, () => {
+          loadTasks();
+        })
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(tasksChannel);
+      };
     }
   }, [profile]);
 
@@ -57,8 +74,24 @@ const Tasks = () => {
     return matchesSearch && matchesStatus && matchesPriority;
   });
 
-  const handleComplete = (taskId: string) => {
-    completeTask.mutate({ taskId, userId: user!.id });
+  const handleComplete = (taskId: string, taskPoints: number) => {
+    completeTask.mutate({ taskId, userId: user!.id, taskPoints });
+  };
+
+  // Kullanıcının görevi tamamlama yetkisi var mı?
+  const canCompleteTask = (task: Task) => {
+    if (!user) return false;
+    
+    // Görev zaten tamamlanmışsa tamamlayamaz
+    if (task.status === 'completed') return false;
+    
+    // Kullanıcı göreve atanmışsa tamamlayabilir
+    if (task.assigned_to.includes(user.id)) return true;
+    
+    // Kullanıcı görevi oluşturmuşsa VE kimseye atanmamışsa tamamlayabilir
+    if (task.created_by === user.id && task.assigned_to.length === 0) return true;
+    
+    return false;
   };
 
   const getPriorityColor = (priority: string) => {
@@ -177,12 +210,12 @@ const Tasks = () => {
                         </div>
                       </div>
                     </div>
-                    {task.status !== 'completed' && (
+                    {canCompleteTask(task) && (
                       <Button
                         size="sm"
                         onClick={(e) => {
                           e.preventDefault();
-                          handleComplete(task.id);
+                          handleComplete(task.id, task.points);
                         }}
                       >
                         Tamamla

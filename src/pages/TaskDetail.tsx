@@ -91,9 +91,25 @@ const TaskDetail = () => {
 
   const handleComplete = () => {
     if (task) {
-      completeTask.mutate({ taskId: task.id, userId: user!.id });
+      completeTask.mutate({ taskId: task.id, userId: user!.id, taskPoints: task.points });
       loadTask();
     }
+  };
+
+  // Kullanıcının görevi tamamlama yetkisi var mı?
+  const canCompleteTask = () => {
+    if (!task || !user) return false;
+    
+    // Görev zaten tamamlanmışsa tamamlayamaz
+    if (task.status === 'completed') return false;
+    
+    // Kullanıcı göreve atanmışsa tamamlayabilir
+    if (task.assigned_to.includes(user.id)) return true;
+    
+    // Kullanıcı görevi oluşturmuşsa VE kimseye atanmamışsa tamamlayabilir
+    if (task.created_by === user.id && task.assigned_to.length === 0) return true;
+    
+    return false;
   };
 
   const handleDelete = async () => {
@@ -158,7 +174,7 @@ const TaskDetail = () => {
                   )}
                 </div>
               </div>
-              {task.status !== 'completed' && (
+              {canCompleteTask() && (
                 <Button onClick={handleComplete}>Görevi Tamamla</Button>
               )}
             </div>
