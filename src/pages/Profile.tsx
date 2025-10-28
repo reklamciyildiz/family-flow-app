@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,14 +7,14 @@ import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, Award } from 'lucide-react';
+import { Trophy, Award, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Profile as ProfileType, UserRole } from '@/types';
 import { toast } from 'sonner';
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [displayName, setDisplayName] = useState('');
   const [role, setRole] = useState<UserRole>('other');
@@ -60,9 +61,9 @@ const Profile = () => {
       .eq('id', user?.id);
 
     if (error) {
-      toast.error('Failed to update profile');
+      toast.error('Profil güncellenemedi');
     } else {
-      toast.success('Profile updated successfully!');
+      toast.success('Profil başarıyla güncellendi!');
       loadProfile();
     }
     setLoading(false);
@@ -80,20 +81,36 @@ const Profile = () => {
 
   const getBadgeName = (badgeType: string) => {
     switch (badgeType) {
-      case 'first_task': return 'First Task';
-      case 'week_star': return 'Week Star';
-      case 'super_team': return 'Super Team';
-      case 'consistent': return 'Consistent';
+      case 'first_task': return 'İlk Görev';
+      case 'week_star': return 'Haftanın Yıldızı';
+      case 'super_team': return 'Süper Takım';
+      case 'consistent': return 'Kararlı';
       default: return badgeType;
     }
   };
 
-  if (!profile) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  if (!profile) return <div className="flex items-center justify-center min-h-screen">Yükleniyor...</div>;
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="mx-auto max-w-4xl space-y-6">
-        <h1 className="text-3xl font-bold">My Profile</h1>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold">Profilim</h1>
+            <Button variant="outline" onClick={signOut}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Çıkış Yap
+            </Button>
+          </div>
+          
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            <Link to="/dashboard"><Button variant="ghost">Pano</Button></Link>
+            <Link to="/tasks"><Button variant="ghost">Görevler</Button></Link>
+            <Link to="/calendar"><Button variant="ghost">Takvim</Button></Link>
+            <Link to="/family"><Button variant="ghost">Aile</Button></Link>
+            <Link to="/profile"><Button variant="secondary">Profil</Button></Link>
+          </div>
+        </div>
 
         <div className="grid gap-6 md:grid-cols-3">
           <Card className="md:col-span-1">
@@ -106,20 +123,22 @@ const Profile = () => {
                 </Avatar>
                 <div className="text-center">
                   <h2 className="text-2xl font-bold">{profile.display_name}</h2>
-                  <Badge className="mt-2">{profile.role}</Badge>
+                  <Badge className="mt-2">
+                    {profile.role === 'parent' ? 'Ebeveyn' : profile.role === 'child' ? 'Çocuk' : 'Diğer'}
+                  </Badge>
                 </div>
                 <div className="w-full space-y-2">
                   <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg">
                     <span className="flex items-center gap-2">
                       <Trophy className="h-5 w-5" />
-                      Points
+                      Puan
                     </span>
                     <span className="text-xl font-bold">{profile.points}</span>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-accent/10 rounded-lg">
                     <span className="flex items-center gap-2">
                       <Award className="h-5 w-5" />
-                      Badges
+                      Rozetler
                     </span>
                     <span className="text-xl font-bold">{badges.length}</span>
                   </div>
@@ -130,11 +149,11 @@ const Profile = () => {
 
           <Card className="md:col-span-2">
             <CardHeader>
-              <CardTitle>Edit Profile</CardTitle>
+              <CardTitle>Profili Düzenle</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="displayName">Display Name</Label>
+                <Label htmlFor="displayName">Görünen Ad</Label>
                 <Input
                   id="displayName"
                   value={displayName}
@@ -143,21 +162,21 @@ const Profile = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="role">Role</Label>
+                <Label htmlFor="role">Rol</Label>
                 <Select value={role} onValueChange={(v) => setRole(v as UserRole)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="parent">Parent</SelectItem>
-                    <SelectItem value="child">Child</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="parent">Ebeveyn</SelectItem>
+                    <SelectItem value="child">Çocuk</SelectItem>
+                    <SelectItem value="other">Diğer</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <Button onClick={handleSave} disabled={loading} className="w-full">
-                {loading ? 'Saving...' : 'Save Changes'}
+                {loading ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
               </Button>
             </CardContent>
           </Card>
@@ -165,12 +184,12 @@ const Profile = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>My Badges</CardTitle>
+            <CardTitle>Rozetlerim</CardTitle>
           </CardHeader>
           <CardContent>
             {badges.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">
-                No badges earned yet. Complete tasks to earn badges!
+                Henüz rozet kazanılmadı. Rozet kazanmak için görevleri tamamlayın!
               </p>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -179,7 +198,7 @@ const Profile = () => {
                     <div className="text-4xl mb-2">{getBadgeIcon(badge.badge_type)}</div>
                     <h3 className="font-semibold">{getBadgeName(badge.badge_type)}</h3>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Earned {new Date(badge.earned_at).toLocaleDateString()}
+                      {new Date(badge.earned_at).toLocaleDateString('tr-TR')} tarihinde kazanıldı
                     </p>
                   </div>
                 ))}

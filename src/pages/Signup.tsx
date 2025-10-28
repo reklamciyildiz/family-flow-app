@@ -20,7 +20,7 @@ const Signup = () => {
     e.preventDefault();
     
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error('Şifreler eşleşmiyor');
       return;
     }
     
@@ -40,10 +40,10 @@ const Signup = () => {
 
       if (error) throw error;
       
-      toast.success('Account created! Redirecting...');
+      toast.success('Hesap oluşturuldu! Yönlendiriliyorsunuz...');
       navigate('/dashboard');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to create account');
+      toast.error(error.message || 'Hesap oluşturulamadı');
     } finally {
       setLoading(false);
     }
@@ -56,35 +56,35 @@ const Signup = () => {
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary">
             <Users className="h-8 w-8 text-primary-foreground" />
           </div>
-          <CardTitle className="text-2xl">Create Account</CardTitle>
-          <CardDescription>Join your family's task management hub</CardDescription>
+          <CardTitle className="text-2xl">Hesap Oluştur</CardTitle>
+          <CardDescription>Ailenizin görev yönetim merkezine katılın</CardDescription>
         </CardHeader>
         <form onSubmit={handleSignup}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="displayName">Display Name</Label>
+              <Label htmlFor="displayName">Görünen Ad</Label>
               <Input
                 id="displayName"
                 type="text"
-                placeholder="Your name"
+                placeholder="Adınız"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">E-posta</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="your@email.com"
+                placeholder="ornek@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Şifre</Label>
               <Input
                 id="password"
                 type="password"
@@ -95,7 +95,7 @@ const Signup = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label htmlFor="confirmPassword">Şifre Tekrar</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -108,12 +108,12 @@ const Signup = () => {
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Creating account..." : "Create Account"}
+          {loading ? "Hesap oluşturuluyor..." : "Hesap Oluştur"}
         </Button>
             <p className="text-center text-sm text-muted-foreground">
-              Already have an account?{' '}
+              Zaten hesabınız var mı?{' '}
               <Link to="/login" className="text-primary hover:underline">
-                Sign in
+                Giriş yap
               </Link>
             </p>
           </CardFooter>

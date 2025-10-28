@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,8 +8,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, LogOut } from 'lucide-react';
 import { format } from 'date-fns';
+import { tr } from 'date-fns/locale';
 import { useAuth } from '@/hooks/useAuth';
 import { useTaskMutations } from '@/hooks/useTaskMutations';
 import { supabase } from '@/integrations/supabase/client';
@@ -17,7 +18,7 @@ import { Profile, TaskPriority, RepeatType } from '@/types';
 import { Checkbox } from '@/components/ui/checkbox';
 
 const TaskNew = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const { createTask } = useTaskMutations();
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -91,43 +92,61 @@ const TaskNew = () => {
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-2xl space-y-6">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold">Yeni Görev Oluştur</h1>
+            <Button variant="outline" onClick={signOut}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Çıkış Yap
+            </Button>
+          </div>
+          
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            <Link to="/dashboard"><Button variant="ghost">Pano</Button></Link>
+            <Link to="/tasks"><Button variant="ghost">Görevler</Button></Link>
+            <Link to="/calendar"><Button variant="ghost">Takvim</Button></Link>
+            <Link to="/family"><Button variant="ghost">Aile</Button></Link>
+            <Link to="/profile"><Button variant="ghost">Profil</Button></Link>
+          </div>
+        </div>
+
         <Card>
           <CardHeader>
-            <CardTitle>Create New Task</CardTitle>
+            <CardTitle>Yeni Görev</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="title">Title *</Label>
+                <Label htmlFor="title">Başlık *</Label>
                 <Input
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Task title"
+                  placeholder="Görev başlığı"
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">Açıklama</Label>
                 <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Task description"
+                  placeholder="Görev açıklaması"
                   rows={4}
                 />
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Due Date</Label>
+                  <Label>Son Tarih</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button variant="outline" className="w-full justify-start text-left font-normal">
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {dueDate ? format(dueDate, 'PPP') : <span>Pick a date</span>}
+                        {dueDate ? format(dueDate, 'PPP', { locale: tr }) : <span>Tarih seçin</span>}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -137,15 +156,15 @@ const TaskNew = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Priority</Label>
+                  <Label>Öncelik</Label>
                   <Select value={priority} onValueChange={(v) => setPriority(v as TaskPriority)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="low">Low</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="low">Düşük</SelectItem>
+                      <SelectItem value="medium">Orta</SelectItem>
+                      <SelectItem value="high">Yüksek</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -153,22 +172,22 @@ const TaskNew = () => {
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Repeat</Label>
+                  <Label>Tekrar</Label>
                   <Select value={repeatType} onValueChange={(v) => setRepeatType(v as RepeatType)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">None</SelectItem>
-                      <SelectItem value="daily">Daily</SelectItem>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="monthly">Monthly</SelectItem>
+                      <SelectItem value="none">Yok</SelectItem>
+                      <SelectItem value="daily">Günlük</SelectItem>
+                      <SelectItem value="weekly">Haftalık</SelectItem>
+                      <SelectItem value="monthly">Aylık</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="points">Points</Label>
+                  <Label htmlFor="points">Puan</Label>
                   <Input
                     id="points"
                     type="number"
@@ -180,7 +199,7 @@ const TaskNew = () => {
               </div>
 
               <div className="space-y-2">
-                <Label>Assign To</Label>
+                <Label>Atanan Kişiler</Label>
                 <div className="space-y-2">
                   {familyMembers.map((member) => (
                     <div key={member.id} className="flex items-center space-x-2">
@@ -202,10 +221,10 @@ const TaskNew = () => {
 
               <div className="flex gap-2">
                 <Button type="button" variant="outline" onClick={() => navigate('/tasks')} className="flex-1">
-                  Cancel
+                  İptal
                 </Button>
                 <Button type="submit" disabled={createTask.isPending} className="flex-1">
-                  {createTask.isPending ? 'Creating...' : 'Create Task'}
+                  {createTask.isPending ? 'Oluşturuluyor...' : 'Görevi Oluştur'}
                 </Button>
               </div>
             </form>

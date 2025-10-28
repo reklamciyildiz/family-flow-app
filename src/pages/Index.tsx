@@ -17,22 +17,22 @@ const Index = () => {
           
           <div className="space-y-4">
             <h1 className="text-5xl font-bold tracking-tight md:text-6xl">
-              Family Task Manager
+              Aile Görev Yöneticisi
             </h1>
             <p className="text-xl text-muted-foreground md:text-2xl max-w-2xl mx-auto">
-              Coordinate, collaborate, and celebrate together. Make family organization fun with tasks, rewards, and friendly competition.
+              Birlikte koordine edin, işbirliği yapın ve kutlayın. Görevler, ödüller ve dostane rekabet ile aile organizasyonunu eğlenceli hale getirin.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/signup">
               <Button size="lg" className="text-lg px-8">
-                Get Started
+                Başlayın
               </Button>
             </Link>
             <Link to="/login">
               <Button size="lg" variant="outline" className="text-lg px-8">
-                Sign In
+                Giriş Yap
               </Button>
             </Link>
           </div>
@@ -45,9 +45,9 @@ const Index = () => {
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                 <CalendarCheck className="h-6 w-6 text-primary" />
               </div>
-              <CardTitle>Task Management</CardTitle>
+              <CardTitle>Görev Yönetimi</CardTitle>
               <CardDescription>
-                Create, assign, and track tasks with due dates and priorities
+                Son teslim tarihleri ve önceliklerle görevler oluşturun, atayın ve takip edin
               </CardDescription>
             </CardHeader>
           </Card>
@@ -57,9 +57,9 @@ const Index = () => {
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary/10">
                 <Trophy className="h-6 w-6 text-secondary" />
               </div>
-              <CardTitle>Gamification</CardTitle>
+              <CardTitle>Oyunlaştırma</CardTitle>
               <CardDescription>
-                Earn points, unlock badges, and climb the family leaderboard
+                Puan kazanın, rozetler açın ve aile lider tablosunda yükselın
               </CardDescription>
             </CardHeader>
           </Card>
@@ -69,9 +69,9 @@ const Index = () => {
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent/20">
                 <Zap className="h-6 w-6 text-accent-foreground" />
               </div>
-              <CardTitle>Real-time Updates</CardTitle>
+              <CardTitle>Gerçek Zamanlı Güncellemeler</CardTitle>
               <CardDescription>
-                Stay synced with instant notifications and live updates
+                Anlık bildirimler ve canlı güncellemelerle senkronize kalın
               </CardDescription>
             </CardHeader>
           </Card>
@@ -81,9 +81,9 @@ const Index = () => {
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-success/10">
                 <Users className="h-6 w-6 text-success" />
               </div>
-              <CardTitle>Family First</CardTitle>
+              <CardTitle>Aile Öncelikli</CardTitle>
               <CardDescription>
-                Built for families to connect and work together seamlessly
+                Ailelerin sorunsuzca bağlantı kurması ve birlikte çalışması için tasarlandı
               </CardDescription>
             </CardHeader>
           </Card>

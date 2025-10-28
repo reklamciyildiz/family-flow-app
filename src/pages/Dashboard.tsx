@@ -124,29 +124,29 @@ const Dashboard = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-foreground">Family Dashboard</h1>
-              <p className="text-muted-foreground">Welcome back, {profile.display_name}!</p>
+              <h1 className="text-3xl font-bold text-foreground">Aile Panosu</h1>
+              <p className="text-muted-foreground">Tekrar hoş geldin, {profile.display_name}!</p>
             </div>
             <div className="flex gap-2">
               <Link to="/tasks/new">
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
-                  New Task
+                  Yeni Görev
                 </Button>
               </Link>
               <Button variant="outline" onClick={signOut}>
                 <LogOut className="mr-2 h-4 w-4" />
-                Sign Out
+                Çıkış Yap
               </Button>
             </div>
           </div>
           
           <div className="flex gap-2 overflow-x-auto pb-2">
-            <Link to="/dashboard"><Button variant="secondary">Dashboard</Button></Link>
-            <Link to="/tasks"><Button variant="ghost">Tasks</Button></Link>
-            <Link to="/calendar"><Button variant="ghost">Calendar</Button></Link>
-            <Link to="/family"><Button variant="ghost">Family</Button></Link>
-            <Link to="/profile"><Button variant="ghost">Profile</Button></Link>
+            <Link to="/dashboard"><Button variant="secondary">Pano</Button></Link>
+            <Link to="/tasks"><Button variant="ghost">Görevler</Button></Link>
+            <Link to="/calendar"><Button variant="ghost">Takvim</Button></Link>
+            <Link to="/family"><Button variant="ghost">Aile</Button></Link>
+            <Link to="/profile"><Button variant="ghost">Profil</Button></Link>
           </div>
         </div>
 
@@ -154,20 +154,20 @@ const Dashboard = () => {
         <div className="grid gap-4 md:grid-cols-3">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Today's Tasks</CardTitle>
+              <CardTitle className="text-sm font-medium">Bugünün Görevleri</CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{todayTasks.length}</div>
               <p className="text-xs text-muted-foreground">
-                {todayTasks.filter(t => t.status === 'completed').length} completed
+                {todayTasks.filter(t => t.status === 'completed').length} tamamlandı
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Completion Rate</CardTitle>
+              <CardTitle className="text-sm font-medium">Tamamlanma Oranı</CardTitle>
               <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -178,12 +178,12 @@ const Dashboard = () => {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Family Members</CardTitle>
+              <CardTitle className="text-sm font-medium">Aile Üyeleri</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{familyMembers.length}</div>
-              <p className="text-xs text-muted-foreground">Active members</p>
+              <p className="text-xs text-muted-foreground">Aktif üye</p>
             </CardContent>
           </Card>
         </div>
@@ -193,12 +193,12 @@ const Dashboard = () => {
           <div className="lg:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle>Today's Tasks</CardTitle>
-                <CardDescription>Tasks due today</CardDescription>
+                <CardTitle>Bugünün Görevleri</CardTitle>
+                <CardDescription>Bugün teslim edilecek görevler</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {todayTasks.length === 0 ? (
-                  <p className="text-center text-muted-foreground py-8">No tasks due today</p>
+                  <p className="text-center text-muted-foreground py-8">Bugün teslim edilecek görev yok</p>
                 ) : (
                   todayTasks.map(task => (
                     <div key={task.id} className="flex items-center justify-between rounded-lg border p-4">
@@ -234,9 +234,9 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Trophy className="h-5 w-5 text-accent" />
-                  Leaderboard
+                  Lider Tablosu
                 </CardTitle>
-                <CardDescription>This week's top performers</CardDescription>
+                <CardDescription>Bu haftanın en iyileri</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {familyMembers.map((member, index) => (

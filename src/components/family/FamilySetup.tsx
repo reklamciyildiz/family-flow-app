@@ -29,7 +29,7 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
 
   const handleCreateFamily = async () => {
     if (!familyName.trim()) {
-      toast.error("Please enter a family name");
+      toast.error("Lütfen bir aile adı girin");
       return;
     }
 
@@ -52,10 +52,10 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
 
       if (profileError) throw profileError;
 
-      toast.success("Family created successfully!");
+      toast.success("Aile başarıyla oluşturuldu!");
       onComplete();
     } catch (error: any) {
-      toast.error(error.message || "Failed to create family");
+      toast.error(error.message || "Aile oluşturulamadı");
     } finally {
       setLoading(false);
     }
@@ -63,7 +63,7 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
 
   const handleJoinFamily = async () => {
     if (!inviteCode.trim()) {
-      toast.error("Please enter an invite code");
+      toast.error("Lütfen bir davet kodu girin");
       return;
     }
 
@@ -75,7 +75,7 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
         .eq("invite_code", inviteCode.toUpperCase())
         .single();
 
-      if (familyError) throw new Error("Invalid invite code");
+      if (familyError) throw new Error("Geçersiz davet kodu");
 
       const { error: profileError } = await supabase
         .from("profiles")
@@ -84,10 +84,10 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
 
       if (profileError) throw profileError;
 
-      toast.success("Joined family successfully!");
+      toast.success("Aileye başarıyla katıldınız!");
       onComplete();
     } catch (error: any) {
-      toast.error(error.message || "Failed to join family");
+      toast.error(error.message || "Aileye katılınamadı");
     } finally {
       setLoading(false);
     }
@@ -98,9 +98,9 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
       <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background to-secondary/20">
         <Card className="max-w-md w-full">
           <CardHeader>
-            <CardTitle>Welcome! Let's set up your family</CardTitle>
+            <CardTitle>Hoş Geldiniz! Ailenizi kuralım</CardTitle>
             <CardDescription>
-              Create a new family or join an existing one
+              Yeni bir aile oluşturun veya mevcut bir aileye katılın
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -110,7 +110,7 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
               onClick={() => setMode("create")}
             >
               <Users className="mr-2 h-5 w-5" />
-              Create New Family
+              Yeni Aile Oluştur
             </Button>
             <Button
               className="w-full h-20"
@@ -118,7 +118,7 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
               onClick={() => setMode("join")}
             >
               <UserPlus className="mr-2 h-5 w-5" />
-              Join Existing Family
+              Mevcut Aileye Katıl
             </Button>
           </CardContent>
         </Card>
@@ -131,19 +131,19 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
       <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background to-secondary/20">
         <Card className="max-w-md w-full">
           <CardHeader>
-            <CardTitle>Create Your Family</CardTitle>
+            <CardTitle>Ailenizi Oluşturun</CardTitle>
             <CardDescription>
-              Choose a name for your family
+              Aileniz için bir isim seçin
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="familyName">Family Name</Label>
+              <Label htmlFor="familyName">Aile Adı</Label>
               <Input
                 id="familyName"
                 value={familyName}
                 onChange={(e) => setFamilyName(e.target.value)}
-                placeholder="The Smiths"
+                placeholder="Yılmaz Ailesi"
               />
             </div>
             <div className="flex gap-2">
@@ -152,14 +152,14 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
                 onClick={() => setMode("choose")}
                 className="flex-1"
               >
-                Back
+                Geri
               </Button>
               <Button
                 onClick={handleCreateFamily}
                 disabled={loading}
                 className="flex-1"
               >
-                {loading ? "Creating..." : "Create Family"}
+                {loading ? "Oluşturuluyor..." : "Aile Oluştur"}
               </Button>
             </div>
           </CardContent>
@@ -172,14 +172,14 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background to-secondary/20">
       <Card className="max-w-md w-full">
         <CardHeader>
-          <CardTitle>Join a Family</CardTitle>
+          <CardTitle>Bir Aileye Katılın</CardTitle>
           <CardDescription>
-            Enter the invite code you received
+            Size gönderilen davet kodunu girin
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="inviteCode">Invite Code</Label>
+            <Label htmlFor="inviteCode">Davet Kodu</Label>
             <Input
               id="inviteCode"
               value={inviteCode}
@@ -194,14 +194,14 @@ export const FamilySetup = ({ onComplete, userId }: FamilySetupProps) => {
               onClick={() => setMode("choose")}
               className="flex-1"
             >
-              Back
+              Geri
             </Button>
             <Button
               onClick={handleJoinFamily}
               disabled={loading}
               className="flex-1"
             >
-              {loading ? "Joining..." : "Join Family"}
+              {loading ? "Katılınıyor..." : "Aileye Katıl"}
             </Button>
           </div>
         </CardContent>

@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Users, Copy, CheckCircle } from 'lucide-react';
+import { Users, Copy, CheckCircle, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Profile } from '@/types';
 import { toast } from 'sonner';
 
 const Family = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [family, setFamily] = useState<any>(null);
   const [familyMembers, setFamilyMembers] = useState<Profile[]>([]);
@@ -60,7 +61,7 @@ const Family = () => {
     if (family?.invite_code) {
       navigator.clipboard.writeText(family.invite_code);
       setCopied(true);
-      toast.success('Invite code copied!');
+      toast.success('Davet kodu kopyalandı!');
       setTimeout(() => setCopied(false), 2000);
     }
   };
@@ -76,9 +77,25 @@ const Family = () => {
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div className="flex items-center gap-2">
-          <Users className="h-6 w-6" />
-          <h1 className="text-3xl font-bold">Family</h1>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Users className="h-6 w-6" />
+              <h1 className="text-3xl font-bold">Aile</h1>
+            </div>
+            <Button variant="outline" onClick={signOut}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Çıkış Yap
+            </Button>
+          </div>
+          
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            <Link to="/dashboard"><Button variant="ghost">Pano</Button></Link>
+            <Link to="/tasks"><Button variant="ghost">Görevler</Button></Link>
+            <Link to="/calendar"><Button variant="ghost">Takvim</Button></Link>
+            <Link to="/family"><Button variant="secondary">Aile</Button></Link>
+            <Link to="/profile"><Button variant="ghost">Profil</Button></Link>
+          </div>
         </div>
 
         {family && (
@@ -88,7 +105,7 @@ const Family = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <p className="text-sm text-muted-foreground mb-2">Invite Code</p>
+                <p className="text-sm text-muted-foreground mb-2">Davet Kodu</p>
                 <div className="flex items-center gap-2">
                   <code className="flex-1 bg-muted p-3 rounded-lg font-mono text-lg">
                     {family.invite_code}
@@ -98,13 +115,13 @@ const Family = () => {
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
-                  Share this code with family members to invite them
+                  Aile üyelerini davet etmek için bu kodu paylaşın
                 </p>
               </div>
 
               <div>
-                <p className="text-sm text-muted-foreground">Created</p>
-                <p className="font-medium">{new Date(family.created_at).toLocaleDateString()}</p>
+                <p className="text-sm text-muted-foreground">Oluşturulma Tarihi</p>
+                <p className="font-medium">{new Date(family.created_at).toLocaleDateString('tr-TR')}</p>
               </div>
             </CardContent>
           </Card>
@@ -112,7 +129,7 @@ const Family = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Family Members ({familyMembers.length})</CardTitle>
+            <CardTitle>Aile Üyeleri ({familyMembers.length})</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -128,13 +145,15 @@ const Family = () => {
                     <div className="flex items-center gap-2">
                       <p className="font-semibold">{member.display_name}</p>
                       {member.id === user?.id && (
-                        <Badge variant="secondary">You</Badge>
+                        <Badge variant="secondary">Siz</Badge>
                       )}
                     </div>
                     <div className="flex items-center gap-2 mt-1">
-                      <Badge className={getRoleColor(member.role)}>{member.role}</Badge>
+                      <Badge className={getRoleColor(member.role)}>
+                        {member.role === 'parent' ? 'Ebeveyn' : member.role === 'child' ? 'Çocuk' : 'Diğer'}
+                      </Badge>
                       <span className="text-sm text-muted-foreground">
-                        {member.points} points
+                        {member.points} puan
                       </span>
                     </div>
                   </div>

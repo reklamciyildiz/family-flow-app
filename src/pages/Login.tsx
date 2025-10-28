@@ -42,24 +42,24 @@ const Login = () => {
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary">
             <Users className="h-8 w-8 text-primary-foreground" />
           </div>
-          <CardTitle className="text-2xl">Welcome Back</CardTitle>
-          <CardDescription>Sign in to manage your family tasks</CardDescription>
+          <CardTitle className="text-2xl">Tekrar Hoş Geldiniz</CardTitle>
+          <CardDescription>Aile görevlerinizi yönetmek için giriş yapın</CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">E-posta</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="your@email.com"
+                placeholder="ornek@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Şifre</Label>
               <Input
                 id="password"
                 type="password"
@@ -70,17 +70,17 @@ const Login = () => {
               />
             </div>
             <Link to="/reset-password" className="text-sm text-primary hover:underline">
-              Forgot password?
+              Şifremi unuttum
             </Link>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Signing in..." : "Sign In"}
+          {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
         </Button>
             <p className="text-center text-sm text-muted-foreground">
-              Don't have an account?{' '}
+              Hesabınız yok mu?{' '}
               <Link to="/signup" className="text-primary hover:underline">
-                Sign up
+                Kayıt ol
               </Link>
             </p>
           </CardFooter>

@@ -5,14 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Search, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import { Plus, Search, CheckCircle2, Clock, AlertCircle, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Task, Profile, TaskStatus, TaskPriority } from '@/types';
 import { useTaskMutations } from '@/hooks/useTaskMutations';
 
 const Tasks = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -81,24 +81,40 @@ const Tasks = () => {
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="mx-auto max-w-7xl space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Tasks</h1>
-            <p className="text-muted-foreground">Manage your family tasks</p>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">Görevler</h1>
+              <p className="text-muted-foreground">Aile görevlerinizi yönetin</p>
+            </div>
+            <div className="flex gap-2">
+              <Link to="/tasks/new">
+                <Button>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Yeni Görev
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={signOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Çıkış Yap
+              </Button>
+            </div>
           </div>
-          <Link to="/tasks/new">
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              New Task
-            </Button>
-          </Link>
+          
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            <Link to="/dashboard"><Button variant="ghost">Pano</Button></Link>
+            <Link to="/tasks"><Button variant="secondary">Görevler</Button></Link>
+            <Link to="/calendar"><Button variant="ghost">Takvim</Button></Link>
+            <Link to="/family"><Button variant="ghost">Aile</Button></Link>
+            <Link to="/profile"><Button variant="ghost">Profil</Button></Link>
+          </div>
         </div>
 
         <div className="flex flex-col gap-4 md:flex-row">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search tasks..."
+              placeholder="Görev ara..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9"
@@ -106,24 +122,24 @@ const Tasks = () => {
           </div>
           <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as TaskStatus | 'all')}>
             <SelectTrigger className="w-full md:w-[180px]">
-              <SelectValue placeholder="Status" />
+              <SelectValue placeholder="Durum" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="in_progress">In Progress</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
+              <SelectItem value="all">Tüm Durumlar</SelectItem>
+              <SelectItem value="pending">Bekliyor</SelectItem>
+              <SelectItem value="in_progress">Devam Ediyor</SelectItem>
+              <SelectItem value="completed">Tamamlandı</SelectItem>
             </SelectContent>
           </Select>
           <Select value={priorityFilter} onValueChange={(v) => setPriorityFilter(v as TaskPriority | 'all')}>
             <SelectTrigger className="w-full md:w-[180px]">
-              <SelectValue placeholder="Priority" />
+              <SelectValue placeholder="Öncelik" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Priority</SelectItem>
-              <SelectItem value="low">Low</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">High</SelectItem>
+              <SelectItem value="all">Tüm Öncelikler</SelectItem>
+              <SelectItem value="low">Düşük</SelectItem>
+              <SelectItem value="medium">Orta</SelectItem>
+              <SelectItem value="high">Yüksek</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -132,9 +148,9 @@ const Tasks = () => {
           {filteredTasks.length === 0 ? (
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12">
-                <p className="text-muted-foreground">No tasks found</p>
+                <p className="text-muted-foreground">Görev bulunamadı</p>
                 <Link to="/tasks/new">
-                  <Button className="mt-4" variant="outline">Create your first task</Button>
+                  <Button className="mt-4" variant="outline">İlk görevinizi oluşturun</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -152,10 +168,10 @@ const Tasks = () => {
                         )}
                         <div className="mt-3 flex flex-wrap gap-2">
                           <Badge className={getPriorityColor(task.priority)}>{task.priority}</Badge>
-                          <Badge variant="outline">{task.points} points</Badge>
+                          <Badge variant="outline">{task.points} puan</Badge>
                           {task.due_date && (
                             <Badge variant="secondary">
-                              Due: {new Date(task.due_date).toLocaleDateString()}
+                              Son: {new Date(task.due_date).toLocaleDateString('tr-TR')}
                             </Badge>
                           )}
                         </div>
@@ -169,7 +185,7 @@ const Tasks = () => {
                           handleComplete(task.id);
                         }}
                       >
-                        Complete
+                        Tamamla
                       </Button>
                     )}
                   </CardHeader>
