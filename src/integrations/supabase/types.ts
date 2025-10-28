@@ -269,6 +269,7 @@ export type Database = {
     }
     Functions: {
       generate_invite_code: { Args: never; Returns: string }
+      get_user_family_id: { Args: { _user_id: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never
