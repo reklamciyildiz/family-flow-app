@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [familyMembers, setFamilyMembers] = useState<Profile[]>([]);
@@ -147,8 +148,6 @@ const Dashboard = () => {
         return 'bg-muted text-muted-foreground';
     }
   };
-
-  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4 md:p-8">

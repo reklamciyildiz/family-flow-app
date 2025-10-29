@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, Award, LogOut } from 'lucide-react';
+import { Trophy, Award, LogOut, User, Crown, Baby, Save, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Profile as ProfileType, UserRole } from '@/types';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
+import { format, parseISO } from 'date-fns';
+import { tr } from 'date-fns/locale';
 
 const Profile = () => {
   const { user, signOut } = useAuth();
@@ -89,14 +92,34 @@ const Profile = () => {
     }
   };
 
-  if (!profile) return <div className="flex items-center justify-center min-h-screen">Yükleniyor...</div>;
+  if (!profile) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4 md:p-8">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold">Profilim</h1>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-4"
+        >
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-primary rounded-xl">
+                <User className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                  Profilim
+                </h1>
+                <p className="text-sm text-muted-foreground">Profil ayarlarını düzenle</p>
+              </div>
+            </div>
             <Button variant="outline" onClick={signOut}>
               <LogOut className="mr-2 h-4 w-4" />
               Çıkış Yap
@@ -110,102 +133,202 @@ const Profile = () => {
             <Link to="/family"><Button variant="ghost">Aile</Button></Link>
             <Link to="/profile"><Button variant="secondary">Profil</Button></Link>
           </div>
-        </div>
+        </motion.div>
 
         <div className="grid gap-6 md:grid-cols-3">
-          <Card className="md:col-span-1">
-            <CardContent className="pt-6">
-              <div className="flex flex-col items-center space-y-4">
-                <Avatar className="h-24 w-24">
-                  <AvatarFallback className="text-3xl">
-                    {profile.display_name.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="text-center">
-                  <h2 className="text-2xl font-bold">{profile.display_name}</h2>
-                  <Badge className="mt-2">
-                    {profile.role === 'parent' ? 'Ebeveyn' : profile.role === 'child' ? 'Çocuk' : 'Diğer'}
-                  </Badge>
-                </div>
-                <div className="w-full space-y-2">
-                  <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg">
-                    <span className="flex items-center gap-2">
-                      <Trophy className="h-5 w-5" />
-                      Puan
-                    </span>
-                    <span className="text-xl font-bold">{profile.points}</span>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
+            className="md:col-span-1"
+          >
+            <Card className="border-2 shadow-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950">
+              <CardContent className="pt-6">
+                <div className="flex flex-col items-center space-y-4">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2, type: "spring" }}
+                  >
+                    <Avatar className="h-28 w-28 ring-4 ring-primary ring-offset-4 shadow-xl">
+                      <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-primary to-purple-600 text-white">
+                        {profile.display_name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </motion.div>
+                  <div className="text-center">
+                    <h2 className="text-2xl font-bold mb-2">{profile.display_name}</h2>
+                    <Badge className={`
+                      ${profile.role === 'parent' ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 
+                        profile.role === 'child' ? 'bg-gradient-to-r from-green-500 to-teal-500' : 
+                        'bg-muted'} text-white text-sm px-3 py-1
+                    `}>
+                      {profile.role === 'parent' ? (
+                        <><Crown className="h-3 w-3 mr-1 inline" /> Ebeveyn</>
+                      ) : profile.role === 'child' ? (
+                        <><Baby className="h-3 w-3 mr-1 inline" /> Çocuk</>
+                      ) : (
+                        'Diğer'
+                      )}
+                    </Badge>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-accent/10 rounded-lg">
-                    <span className="flex items-center gap-2">
-                      <Award className="h-5 w-5" />
-                      Rozetler
-                    </span>
-                    <span className="text-xl font-bold">{badges.length}</span>
+                  <div className="w-full space-y-3">
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900 dark:to-yellow-900 rounded-xl border-2 border-amber-300 shadow-md">
+                      <span className="flex items-center gap-2 font-semibold">
+                        <Trophy className="h-5 w-5 text-amber-600" />
+                        Puan
+                      </span>
+                      <span className="text-2xl font-bold text-amber-700 dark:text-amber-300">{profile.points}</span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 rounded-xl border-2 border-purple-300 shadow-md">
+                      <span className="flex items-center gap-2 font-semibold">
+                        <Award className="h-5 w-5 text-purple-600" />
+                        Rozetler
+                      </span>
+                      <span className="text-2xl font-bold text-purple-700 dark:text-purple-300">{badges.length}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-          <Card className="md:col-span-2">
-            <CardHeader>
-              <CardTitle>Profili Düzenle</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="displayName">Görünen Ad</Label>
-                <Input
-                  id="displayName"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                />
-              </div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="md:col-span-2"
+          >
+            <Card className="border-2 shadow-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                  Profili Düzenle
+                </CardTitle>
+                <CardDescription>Profil bilgilerini güncelle</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="displayName" className="text-base font-semibold">Görünen Ad</Label>
+                  <Input
+                    id="displayName"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    className="border-2 h-12 text-base"
+                    placeholder="Adınızı girin..."
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="role">Rol</Label>
-                <Select value={role} onValueChange={(v) => setRole(v as UserRole)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="parent">Ebeveyn</SelectItem>
-                    <SelectItem value="child">Çocuk</SelectItem>
-                    <SelectItem value="other">Diğer</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="role" className="text-base font-semibold">Rol</Label>
+                  <Select value={role} onValueChange={(v) => setRole(v as UserRole)}>
+                    <SelectTrigger className="border-2 h-12 text-base">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="parent">
+                        <div className="flex items-center gap-2">
+                          <Crown className="h-4 w-4" />
+                          Ebeveyn
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="child">
+                        <div className="flex items-center gap-2">
+                          <Baby className="h-4 w-4" />
+                          Çocuk
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="other">Diğer</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <Button onClick={handleSave} disabled={loading} className="w-full">
-                {loading ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet'}
-              </Button>
-            </CardContent>
-          </Card>
+                <Button 
+                  onClick={handleSave} 
+                  disabled={loading} 
+                  className="w-full h-12 text-base shadow-lg hover:shadow-xl transition-shadow"
+                  size="lg"
+                >
+                  {loading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Kaydediliyor...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="mr-2 h-5 w-5" />
+                      Değişiklikleri Kaydet
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Rozetlerim</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {badges.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">
-                Henüz rozet kazanılmadı. Rozet kazanmak için görevleri tamamlayın!
-              </p>
-            ) : (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {badges.map((badge) => (
-                  <div key={badge.id} className="border rounded-lg p-4 text-center">
-                    <div className="text-4xl mb-2">{getBadgeIcon(badge.badge_type)}</div>
-                    <h3 className="font-semibold">{getBadgeName(badge.badge_type)}</h3>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {new Date(badge.earned_at).toLocaleDateString('tr-TR')} tarihinde kazanıldı
-                    </p>
-                  </div>
-                ))}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <Card className="border-2 shadow-xl">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-2xl flex items-center gap-2">
+                    <Award className="h-6 w-6 text-primary" />
+                    Rozetlerim
+                  </CardTitle>
+                  <CardDescription>Kazandığınız başarı rozetleri</CardDescription>
+                </div>
+                <Badge variant="secondary" className="text-lg px-4 py-2">
+                  {badges.length}
+                </Badge>
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              {badges.length === 0 ? (
+                <div className="text-center py-16">
+                  <Award className="h-20 w-20 mx-auto mb-4 text-muted-foreground opacity-50" />
+                  <p className="text-xl font-semibold mb-2">Henüz rozet kazanılmadı</p>
+                  <p className="text-muted-foreground mb-6">
+                    Rozet kazanmak için görevleri tamamlayın! 🎯
+                  </p>
+                  <Link to="/tasks">
+                    <Button size="lg">
+                      <Trophy className="mr-2 h-5 w-5" />
+                      Görevlere Git
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {badges.map((badge, index) => (
+                    <motion.div
+                      key={badge.id}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.4 + index * 0.05 }}
+                      className="border-2 rounded-xl p-6 text-center hover:shadow-lg transition-all bg-gradient-to-br from-background to-muted/10 group"
+                    >
+                      <motion.div 
+                        className="text-6xl mb-3 group-hover:scale-110 transition-transform"
+                        whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {getBadgeIcon(badge.badge_type)}
+                      </motion.div>
+                      <h3 className="font-bold text-lg mb-1">{getBadgeName(badge.badge_type)}</h3>
+                      <p className="text-xs text-muted-foreground">
+                        {format(parseISO(badge.earned_at), "d MMMM yyyy", { locale: tr })}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   );
