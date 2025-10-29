@@ -196,9 +196,9 @@ const Calendar = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <motion.div
-                initial={{ rotate: 0 }}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 260, damping: 20 }}
               >
                 <CalendarIcon className="h-8 w-8 text-primary" />
               </motion.div>
