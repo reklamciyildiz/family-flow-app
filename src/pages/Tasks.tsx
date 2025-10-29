@@ -317,7 +317,7 @@ const Tasks = () => {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.5, type: "spring" }}
-          className="fixed bottom-8 right-8"
+          className="fixed bottom-24 right-8 md:bottom-8 z-60"
         >
           <Link to="/tasks/new">
             <Button
