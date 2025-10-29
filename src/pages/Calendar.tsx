@@ -4,7 +4,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Calendar as CalendarIcon, 
   LogOut, 
@@ -253,8 +252,8 @@ const Calendar = () => {
             </div>
 
             {/* Week Days - Horizontal Scroll */}
-            <ScrollArea className="w-full">
-              <div className="flex gap-3 pb-2">
+            <div className="w-full overflow-x-auto overflow-y-hidden">
+              <div className="flex gap-3 pb-2 min-w-max px-1">
                 {weekDays.map((day, index) => {
                   const taskCount = getTaskCountForDay(day);
                   const isSelected = isSameDay(day, selectedDate);
@@ -304,7 +303,7 @@ const Calendar = () => {
                   );
                 })}
               </div>
-            </ScrollArea>
+            </div>
           </CardContent>
         </Card>
 
