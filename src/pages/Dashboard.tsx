@@ -150,7 +150,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4 md:p-8 pb-24 md:pb-8">
       <div className="mx-auto max-w-7xl space-y-8">
         {/* Header */}
         <motion.div 
@@ -181,7 +181,7 @@ const Dashboard = () => {
             </div>
           </div>
           
-          <div className="flex gap-2 overflow-x-auto pb-2">
+          <div className="hidden md:flex gap-2 overflow-x-auto pb-2">
             <Link to="/dashboard"><Button variant="secondary">Pano</Button></Link>
             <Link to="/tasks"><Button variant="ghost">Görevler</Button></Link>
             <Link to="/calendar"><Button variant="ghost">Takvim</Button></Link>

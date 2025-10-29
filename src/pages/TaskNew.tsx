@@ -110,7 +110,7 @@ const TaskNew = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4 md:p-8 pb-24 md:pb-8">
       <div className="mx-auto max-w-3xl space-y-6">
         {/* Header */}
         <motion.div
@@ -143,7 +143,7 @@ const TaskNew = () => {
             </Button>
           </div>
           
-          <div className="flex gap-2 overflow-x-auto pb-2">
+          <div className="hidden md:flex gap-2 overflow-x-auto pb-2">
             <Link to="/dashboard"><Button variant="ghost">📊 Pano</Button></Link>
             <Link to="/tasks"><Button variant="ghost">✅ Görevler</Button></Link>
             <Link to="/calendar"><Button variant="ghost">📅 Takvim</Button></Link>

@@ -1,0 +1,60 @@
+# ===============================
+# Cursor Rules for Aile Task App
+# ===============================
+
+name: "Aile Task App Sync Rules"
+description: >
+  Defines how the assistant should manage synchronization, customization,
+  and enhancement of the family task app across web and mobile (Capacitor) versions.
+
+rules:
+  - When editing this project, always remember:
+      - The project is a Family Task Application.
+      - The frontend is built with React + TailwindCSS + Capacitor.
+      - The backend is Supabase (auth, database, storage, functions).
+      - The web version is deployed via Vercel.
+      - The mobile versions (Android + iOS) are built and deployed via Capacitor.
+  
+  - Maintain synchronization between web and mobile versions at all times.
+    - Web and mobile share the same codebase.
+    - Mobile-specific UI logic should be isolated under `src/mobile/` 
+      or controlled via device checks like `useIsMobile()` or CSS breakpoints (e.g., `md:hidden`).
+    - Never overwrite mobile-specific changes when updating the web version.
+
+  - Mobile UX must feel native:
+      - Use bottom navigation instead of top menus.
+      - Optimize tap areas, spacing, and transitions for touch devices.
+      - Suggest or add swipe navigation or native-feeling interactions where possible.
+
+  - Whenever a new change is made:
+      - Identify which files were affected.
+      - Explain briefly *why* each change was made and how it impacts web vs. mobile.
+      - Keep the code structure modular and platform-aware.
+
+  - For UI differences:
+      - Use responsive utilities (Tailwind) or conditional rendering in React.
+      - Do not duplicate logic unnecessarily; abstract shared behavior into hooks or components.
+      - Store platform-specific constants, assets, and layouts separately.
+
+  - Mobile-only updates:
+      - Place mobile enhancements in a dedicated branch (`mobile-adjustments`).
+      - Ensure that merging new web updates does not override mobile UX changes.
+
+  - When new features are added on the web:
+      - Reflect them in mobile unless explicitly marked as web-only.
+      - Maintain consistency with Supabase integration (auth, tasks, scoring, etc.).
+
+  - If asked to rebuild the mobile version after web updates:
+      - Remind the developer to run: 
+        ```
+        npx cap sync
+        npx cap open android
+        npx cap open ios
+        ```
+      - Verify the sync before final build.
+
+  - Initial task example:
+      - Move the top navigation buttons to a footer menu for the mobile layout.
+      - Keep the web header layout unchanged.
+      - Implement it in a way that future updates to web code don’t break the mobile footer.
+

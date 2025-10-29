@@ -189,7 +189,7 @@ const Calendar = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4 md:p-8 pb-24 md:pb-8">
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header */}
         <div className="space-y-4">
@@ -222,7 +222,7 @@ const Calendar = () => {
             </div>
           </div>
           
-          <div className="flex gap-2 overflow-x-auto pb-2">
+          <div className="hidden md:flex gap-2 overflow-x-auto pb-2">
             <Link to="/dashboard"><Button variant="ghost">Pano</Button></Link>
             <Link to="/tasks"><Button variant="ghost">Görevler</Button></Link>
             <Link to="/calendar"><Button variant="secondary">Takvim</Button></Link>
