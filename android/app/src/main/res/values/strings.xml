@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">family-flow-app</string>
+    <string name="title_activity_main">family-flow-app</string>
+    <string name="package_name">com.familyflow.app</string>
+    <string name="custom_url_scheme">com.familyflow.app</string>
+</resources>
