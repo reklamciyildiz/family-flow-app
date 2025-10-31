@@ -56,7 +56,7 @@ export class NotificationService {
     if (reminder24h > now) {
       await this.scheduleNotification({
         id: generateNotificationId(task.id, NotificationType.TASK_DEADLINE_24H),
-        title: '⏰ Görev Hatırlatması',
+        title: '⏰ ',
         body: `"${task.title}" için 24 saat kaldı!`,
         scheduleAt: reminder24h,
         data: {

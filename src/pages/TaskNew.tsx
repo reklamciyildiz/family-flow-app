@@ -29,6 +29,7 @@ const TaskNew = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState<Date>();
+  const [dueTime, setDueTime] = useState('09:00'); // Varsayılan saat
   const [priority, setPriority] = useState<TaskPriority>('medium');
   const [repeatType, setRepeatType] = useState<RepeatType>('none');
   const [points, setPoints] = useState(10);
@@ -68,11 +69,20 @@ const TaskNew = () => {
     
     if (!profile?.family_id) return;
 
+    // Tarih ve saati birleştir
+    let finalDueDate: string | null = null;
+    if (dueDate) {
+      const [hours, minutes] = dueTime.split(':').map(Number);
+      const combinedDate = new Date(dueDate);
+      combinedDate.setHours(hours, minutes, 0, 0);
+      finalDueDate = combinedDate.toISOString();
+    }
+
     await createTask.mutateAsync({
       family_id: profile.family_id,
       title,
       description: description || null,
-      due_date: dueDate?.toISOString() || null,
+      due_date: finalDueDate,
       priority,
       repeat_type: repeatType,
       points,
@@ -219,22 +229,33 @@ const TaskNew = () => {
                   <div className="space-y-3">
                     <Label className="text-base font-semibold flex items-center gap-2">
                       <Clock className="h-5 w-5 text-indigo-500" />
-                      Son Tarih
+                      Son Tarih ve Saat
                     </Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button 
-                          variant="outline" 
-                          className="w-full h-12 justify-start text-left font-normal border-2 hover:border-indigo-500 transition-all"
-                        >
-                          <CalendarIcon className="mr-2 h-5 w-5 text-indigo-500" />
-                          {dueDate ? format(dueDate, 'PPP', { locale: tr }) : <span className="text-muted-foreground">Tarih seçin</span>}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar mode="single" selected={dueDate} onSelect={setDueDate} initialFocus />
-                      </PopoverContent>
-                    </Popover>
+                    <div className="grid gap-3">
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button 
+                            variant="outline" 
+                            className="w-full h-12 justify-start text-left font-normal border-2 hover:border-indigo-500 transition-all"
+                          >
+                            <CalendarIcon className="mr-2 h-5 w-5 text-indigo-500" />
+                            {dueDate ? format(dueDate, 'PPP', { locale: tr }) : <span className="text-muted-foreground">Tarih seçin</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar mode="single" selected={dueDate} onSelect={setDueDate} initialFocus />
+                        </PopoverContent>
+                      </Popover>
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-5 w-5 text-indigo-500" />
+                        <Input
+                          type="time"
+                          value={dueTime}
+                          onChange={(e) => setDueTime(e.target.value)}
+                          className="h-12 text-base border-2 focus:border-indigo-500 transition-all"
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div className="space-y-3">
