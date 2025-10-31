@@ -2,9 +2,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Task } from '@/types';
+import { useLocalNotifications } from './useLocalNotifications';
+import { getNotificationService } from '@/services/notificationService';
 
 export const useTaskMutations = () => {
   const queryClient = useQueryClient();
+  const notificationHook = useLocalNotifications();
+  const notificationService = getNotificationService(notificationHook);
 
   const createTask = useMutation({
     mutationFn: async (task: Omit<Task, 'id' | 'created_at' | 'completed_at' | 'completed_by'>) => {
@@ -17,12 +21,22 @@ export const useTaskMutations = () => {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
+    onSuccess: async (data) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      toast.success('Task created successfully!');
+      toast.success('Görev oluşturuldu!');
+      
+      // Deadline varsa bildirimleri zamanla
+      if (data) {
+        await notificationService.scheduleTaskDeadlineReminders(data as Task);
+        
+        // Tekrar eden görevse hatırlatma ekle
+        if ((data as Task).repeat_type !== 'none') {
+          await notificationService.scheduleRecurringTaskReminder(data as Task);
+        }
+      }
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Failed to create task');
+      toast.error(error.message || 'Görev oluşturulamadı');
     },
   });
 
@@ -38,12 +52,17 @@ export const useTaskMutations = () => {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
+    onSuccess: async (data) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      toast.success('Task updated successfully!');
+      toast.success('Görev güncellendi!');
+      
+      // Deadline güncellendiysе bildirimleri yeniden zamanla
+      if (data && 'due_date' in data) {
+        await notificationService.onTaskDeadlineUpdated(data as Task);
+      }
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Failed to update task');
+      toast.error(error.message || 'Görev güncellenemedi');
     },
   });
 
@@ -55,13 +74,19 @@ export const useTaskMutations = () => {
         .eq('id', id);
       
       if (error) throw error;
+      return id;
     },
-    onSuccess: () => {
+    onSuccess: async (id) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      toast.success('Task deleted successfully!');
+      toast.success('Görev silindi!');
+      
+      // Görev silindiğinde tüm bildirimleri iptal et
+      if (id) {
+        await notificationService.onTaskDeleted(id);
+      }
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Failed to delete task');
+      toast.error(error.message || 'Görev silinemedi');
     },
   });
 
@@ -98,12 +123,17 @@ export const useTaskMutations = () => {
 
       if (updateError) throw updateError;
 
-      return taskData;
+      return { taskData, taskId };
     },
-    onSuccess: (_, variables) => {
+    onSuccess: async (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       queryClient.invalidateQueries({ queryKey: ['profiles'] });
       toast.success(`🎉 Görev tamamlandı! +${variables.taskPoints} puan kazandın!`);
+      
+      // Görev tamamlandığında bildirimleri iptal et
+      if (data.taskId) {
+        await notificationService.onTaskCompleted(data.taskId);
+      }
     },
     onError: (error: any) => {
       toast.error(error.message || 'Görev tamamlanamadı');
