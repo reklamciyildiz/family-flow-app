@@ -149,22 +149,30 @@ const TaskDetail = () => {
           className="space-y-4"
         >
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={() => navigate('/tasks')} className="hover:scale-110 transition-transform">
-                <ArrowLeft className="h-5 w-5" />
+            <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => navigate('/tasks')} 
+                className="h-10 w-10 md:h-9 md:w-9 hover:scale-110 transition-all active:scale-95 hover:bg-primary/10 flex-shrink-0"
+              >
+                <ArrowLeft className="h-5 w-5 md:h-5 md:w-5" />
               </Button>
-              <div>
-                <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent truncate">
                   Görev Detayları
                 </h1>
-                <p className="text-sm text-muted-foreground">Görevi incele, yönet ve tamamla</p>
+                <p className="text-xs md:text-sm text-muted-foreground hidden md:block">Görevi incele, yönet ve tamamla</p>
               </div>
             </div>
-            <div className="flex gap-2">
-              <Button variant="destructive" size="icon" onClick={handleDelete} className="hover:scale-110 transition-transform">
+            <div className="flex gap-2 flex-shrink-0">
+              <Button variant="destructive" size="icon" onClick={handleDelete} className="h-10 w-10 md:h-9 md:w-9 hover:scale-110 transition-all active:scale-95">
                 <Trash2 className="h-4 w-4" />
               </Button>
-              <Button variant="outline" onClick={signOut}>
+              <Button variant="outline" size="icon" onClick={signOut} className="md:hidden h-10 w-10">
+                <LogOut className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" onClick={signOut} className="hidden md:flex">
                 <LogOut className="mr-2 h-4 w-4" />
                 Çıkış Yap
               </Button>

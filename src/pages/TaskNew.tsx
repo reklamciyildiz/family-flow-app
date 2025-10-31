@@ -129,28 +129,42 @@ const TaskNew = () => {
           transition={{ duration: 0.5 }}
           className="space-y-4"
         >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => navigate('/tasks')} 
+                className="h-10 w-10 md:h-9 md:w-9 hover:scale-110 transition-all active:scale-95 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 flex-shrink-0"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
               <motion.div
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                className="flex-shrink-0"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg">
-                  <Sparkles className="h-6 w-6 text-white" />
+                <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg">
+                  <Sparkles className="h-5 w-5 md:h-6 md:w-6 text-white" />
                 </div>
               </motion.div>
-              <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent truncate">
                   Yeni Görev Oluştur
                 </h1>
-                <p className="text-sm text-muted-foreground">Aileniz için yeni bir görev tanımlayın</p>
+                <p className="text-xs md:text-sm text-muted-foreground hidden md:block">Aileniz için yeni bir görev tanımlayın</p>
               </div>
             </div>
-            <Button variant="outline" onClick={signOut} className="hidden md:flex">
-              <LogOut className="mr-2 h-4 w-4" />
-              Çıkış Yap
-            </Button>
+            <div className="flex gap-2 flex-shrink-0">
+              <Button variant="outline" size="icon" onClick={signOut} className="md:hidden h-10 w-10">
+                <LogOut className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" onClick={signOut} className="hidden md:flex">
+                <LogOut className="mr-2 h-4 w-4" />
+                Çıkış Yap
+              </Button>
+            </div>
           </div>
           
           <div className="hidden md:flex gap-2 overflow-x-auto pb-2">

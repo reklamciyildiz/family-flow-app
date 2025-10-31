@@ -199,8 +199,9 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
+            className="w-full"
           >
-            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 w-full">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Bugünün Görevleri</CardTitle>
                 <div className="p-2 bg-blue-500 rounded-lg">
@@ -221,8 +222,9 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
+            className="w-full"
           >
-            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 w-full">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Tamamlanma Oranı</CardTitle>
                 <div className="p-2 bg-green-500 rounded-lg">
@@ -243,8 +245,9 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
+            className="w-full"
           >
-            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 w-full">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Aile Üyeleri</CardTitle>
                 <div className="p-2 bg-purple-500 rounded-lg">
@@ -307,7 +310,7 @@ const Dashboard = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.5 + index * 0.05 }}
                       onClick={() => navigate(`/tasks/${task.id}`)}
-                      className="flex items-center justify-between rounded-xl border-2 p-3 md:p-4 hover:shadow-md transition-all cursor-pointer bg-gradient-to-r from-background to-muted/20 active:scale-[0.98] touch-manipulation overflow-hidden"
+                      className="flex items-center justify-between rounded-xl border-2 p-3 md:p-4 hover:shadow-md transition-all cursor-pointer bg-gradient-to-r from-background to-muted/20 active:scale-[0.98] touch-manipulation overflow-hidden w-full"
                     >
                       <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0 overflow-hidden">
                         <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${

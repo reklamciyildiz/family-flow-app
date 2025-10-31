@@ -243,9 +243,10 @@ const Tasks = () => {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ delay: index * 0.05 }}
                   layout
+                  className="w-full"
                 >
-                  <Link to={`/tasks/${task.id}`}>
-                    <Card className="border-2 hover:shadow-xl transition-all cursor-pointer group bg-gradient-to-r from-background to-muted/10 active:scale-[0.98] overflow-hidden">
+                  <Link to={`/tasks/${task.id}`} className="block w-full">
+                    <Card className="border-2 hover:shadow-xl transition-all cursor-pointer group bg-gradient-to-r from-background to-muted/10 active:scale-[0.98] overflow-hidden w-full">
                       <CardHeader className="flex flex-row items-start justify-between space-y-0 p-4 md:p-6 overflow-hidden">
                         <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0 overflow-hidden">
                           <div className={`
