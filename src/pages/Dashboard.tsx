@@ -307,9 +307,9 @@ const Dashboard = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.5 + index * 0.05 }}
                       onClick={() => navigate(`/tasks/${task.id}`)}
-                      className="flex items-center justify-between rounded-xl border-2 p-3 md:p-4 hover:shadow-md transition-all cursor-pointer bg-gradient-to-r from-background to-muted/20 active:scale-[0.98] touch-manipulation"
+                      className="flex items-center justify-between rounded-xl border-2 p-3 md:p-4 hover:shadow-md transition-all cursor-pointer bg-gradient-to-r from-background to-muted/20 active:scale-[0.98] touch-manipulation overflow-hidden"
                     >
-                      <div className="flex items-center gap-4 flex-1 min-w-0">
+                      <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0 overflow-hidden">
                         <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${
                           task.status === 'completed' 
                             ? 'bg-green-100 dark:bg-green-900' 
@@ -321,18 +321,18 @@ const Dashboard = () => {
                             <Clock className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                           )}
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold truncate">{task.title}</h3>
+                        <div className="flex-1 min-w-0 overflow-hidden">
+                          <h3 className="font-semibold text-sm md:text-base truncate">{task.title}</h3>
                           {task.description && (
-                            <p className="text-sm text-muted-foreground line-clamp-1">{task.description}</p>
+                            <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 truncate">{task.description}</p>
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center gap-3 flex-shrink-0">
-                        <Badge className={getPriorityColor(task.priority)}>
+                      <div className="flex items-center gap-1.5 md:gap-2 flex-shrink-0">
+                        <Badge className={`${getPriorityColor(task.priority)} text-xs md:text-sm whitespace-nowrap`}>
                           {task.priority === 'high' ? '🔴' : task.priority === 'medium' ? '🟡' : '🟢'}
                         </Badge>
-                        <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">
+                        <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs md:text-sm whitespace-nowrap">
                           ⚡ {task.points}
                         </Badge>
                       </div>

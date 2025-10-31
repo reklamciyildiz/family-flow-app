@@ -11,6 +11,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Task, Profile, TaskStatus, TaskPriority } from '@/types';
 import { useTaskMutations } from '@/hooks/useTaskMutations';
 import { motion, AnimatePresence } from 'framer-motion';
+import { format } from 'date-fns';
+import { tr } from 'date-fns/locale';
 
 const Tasks = () => {
   const { user, signOut } = useAuth();
@@ -243,9 +245,9 @@ const Tasks = () => {
                   layout
                 >
                   <Link to={`/tasks/${task.id}`}>
-                    <Card className="border-2 hover:shadow-xl transition-all cursor-pointer group bg-gradient-to-r from-background to-muted/10 active:scale-[0.98]">
-                      <CardHeader className="flex flex-row items-start justify-between space-y-0 p-4 md:p-6">
-                        <div className="flex items-start gap-4 flex-1 min-w-0">
+                    <Card className="border-2 hover:shadow-xl transition-all cursor-pointer group bg-gradient-to-r from-background to-muted/10 active:scale-[0.98] overflow-hidden">
+                      <CardHeader className="flex flex-row items-start justify-between space-y-0 p-4 md:p-6 overflow-hidden">
+                        <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0 overflow-hidden">
                           <div className={`
                             flex h-12 w-12 items-center justify-center rounded-xl flex-shrink-0
                             ${task.status === 'completed' 
@@ -257,37 +259,40 @@ const Tasks = () => {
                           `}>
                             {getStatusIcon(task.status)}
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <CardTitle className="text-xl mb-2 truncate group-hover:text-primary transition-colors">
+                          <div className="flex-1 min-w-0 overflow-hidden">
+                            <CardTitle className="text-lg md:text-xl mb-1 md:mb-2 truncate group-hover:text-primary transition-colors">
                               {task.title}
                             </CardTitle>
                             {task.description && (
-                              <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                              <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 md:line-clamp-2 mb-2 md:mb-3">
                                 {task.description}
                               </p>
                             )}
-                            <div className="flex flex-wrap gap-2">
-                              <Badge className={`${getPriorityColor(task.priority)} text-sm`}>
-                                {task.priority === 'high' ? '🔴 Yüksek' : 
-                                 task.priority === 'medium' ? '🟡 Orta' : 
-                                 '🟢 Düşük'}
+                            <div className="flex flex-wrap gap-1.5 md:gap-2">
+                              <Badge className={`${getPriorityColor(task.priority)} text-xs md:text-sm whitespace-nowrap`}>
+                                {task.priority === 'high' ? '🔴' : 
+                                 task.priority === 'medium' ? '🟡' : 
+                                 '🟢'}
+                                <span className="hidden md:inline ml-1">
+                                  {task.priority === 'high' ? 'Yüksek' : 
+                                   task.priority === 'medium' ? 'Orta' : 
+                                   'Düşük'}
+                                </span>
                               </Badge>
-                              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-sm">
-                                ⚡ {task.points} puan
+                              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs md:text-sm whitespace-nowrap">
+                                ⚡ {task.points}
                               </Badge>
                               {task.due_date && (
-                                <Badge variant="secondary" className="text-sm">
-                                  📅 {new Date(task.due_date).toLocaleDateString('tr-TR', { 
-                                    day: 'numeric', 
-                                    month: 'short',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                  })}
+                                <Badge variant="secondary" className="text-xs md:text-sm whitespace-nowrap max-w-[120px] md:max-w-none truncate">
+                                  📅 {format(new Date(task.due_date), 'd MMM', { locale: tr })}
+                                  <span className="hidden md:inline">
+                                    {' '}{format(new Date(task.due_date), 'HH:mm')}
+                                  </span>
                                 </Badge>
                               )}
                               {task.status === 'completed' && (
-                                <Badge className="bg-green-500 text-white text-sm">
-                                  ✅ Tamamlandı
+                                <Badge className="bg-green-500 text-white text-xs md:text-sm whitespace-nowrap">
+                                  ✅ <span className="hidden md:inline">Tamamlandı</span>
                                 </Badge>
                               )}
                             </div>
