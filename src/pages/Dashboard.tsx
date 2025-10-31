@@ -150,8 +150,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-3 md:p-8 pb-24 md:pb-8">
-      <div className="mx-auto max-w-7xl space-y-4 md:space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-3 md:p-8 pb-24 md:pb-8 overflow-x-hidden">
+      <div className="mx-auto max-w-7xl space-y-4 md:space-y-8 w-full overflow-x-hidden">
         {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}

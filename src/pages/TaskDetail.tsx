@@ -141,8 +141,8 @@ const TaskDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4 md:p-8 pb-24 md:pb-8">
-      <div className="mx-auto max-w-4xl space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4 md:p-8 pb-24 md:pb-8 overflow-x-hidden">
+      <div className="mx-auto max-w-4xl space-y-6 w-full overflow-x-hidden">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -185,10 +185,10 @@ const TaskDetail = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className={`border-l-8 ${getPriorityColor()} border-2 shadow-xl`}>
-            <CardHeader>
-              <div className="flex items-start justify-between flex-wrap gap-4">
-                <div className="flex-1 min-w-0">
+          <Card className={`border-l-8 ${getPriorityColor()} border-2 shadow-xl overflow-hidden`}>
+            <CardHeader className="overflow-hidden">
+              <div className="flex items-start justify-between flex-wrap gap-4 overflow-hidden">
+                <div className="flex-1 min-w-0 overflow-hidden">
                   <div className="flex items-center gap-3 mb-3">
                     <div className={`p-3 rounded-xl ${
                       task.status === 'completed' 
@@ -201,25 +201,31 @@ const TaskDetail = () => {
                         <Clock className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                       )}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <CardTitle className="text-2xl md:text-3xl truncate">{task.title}</CardTitle>
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                      <CardTitle className="text-xl md:text-2xl lg:text-3xl truncate">{task.title}</CardTitle>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge className={task.status === 'completed' ? 'bg-green-500' : 'bg-blue-500'}>
-                      {task.status === 'completed' ? '✅ Tamamlandı' : task.status === 'in_progress' ? '⚡ Devam Ediyor' : '⏳ Bekliyor'}
+                  <div className="flex flex-wrap gap-1.5 md:gap-2">
+                    <Badge className={`${task.status === 'completed' ? 'bg-green-500' : 'bg-blue-500'} text-xs md:text-sm whitespace-nowrap`}>
+                      {task.status === 'completed' ? '✅' : task.status === 'in_progress' ? '⚡' : '⏳'}
+                      <span className="hidden md:inline ml-1">
+                        {task.status === 'completed' ? 'Tamamlandı' : task.status === 'in_progress' ? 'Devam Ediyor' : 'Bekliyor'}
+                      </span>
                     </Badge>
-                    <Badge className="bg-gradient-to-r from-red-500 to-orange-500 text-white">
-                      {task.priority === 'high' ? '🔴 Yüksek' : task.priority === 'medium' ? '🟡 Orta' : '🟢 Düşük'} Öncelik
+                    <Badge className="bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs md:text-sm whitespace-nowrap">
+                      {task.priority === 'high' ? '🔴' : task.priority === 'medium' ? '🟡' : '🟢'}
+                      <span className="hidden md:inline ml-1">
+                        {task.priority === 'high' ? 'Yüksek' : task.priority === 'medium' ? 'Orta' : 'Düşük'}
+                      </span>
                     </Badge>
-                    <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-300">
-                      <Zap className="h-3 w-3 mr-1" />
-                      {task.points} puan
+                    <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-300 text-xs md:text-sm whitespace-nowrap">
+                      <Zap className="h-3 w-3 mr-1 flex-shrink-0" />
+                      {task.points}
                     </Badge>
                     {task.due_date && (
-                      <Badge variant="secondary" className="gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {format(parseISO(task.due_date), "d MMMM yyyy, HH:mm", { locale: tr })}
+                      <Badge variant="secondary" className="gap-1 text-xs md:text-sm whitespace-nowrap max-w-[200px] truncate">
+                        <Calendar className="h-3 w-3 flex-shrink-0" />
+                        <span className="truncate">{format(parseISO(task.due_date), "d MMM yyyy, HH:mm", { locale: tr })}</span>
                       </Badge>
                     )}
                   </div>
@@ -232,14 +238,14 @@ const TaskDetail = () => {
                 )}
               </div>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 overflow-hidden">
               {task.description && (
-                <div className="p-4 bg-muted/50 rounded-xl">
+                <div className="p-4 bg-muted/50 rounded-xl overflow-hidden">
                   <h3 className="font-semibold mb-2 flex items-center gap-2">
-                    <MessageCircle className="h-4 w-4" />
+                    <MessageCircle className="h-4 w-4 flex-shrink-0" />
                     Açıklama
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">{task.description}</p>
+                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed break-words whitespace-pre-wrap">{task.description}</p>
                 </div>
               )}
 
@@ -312,17 +318,17 @@ const TaskDetail = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <Card className="border-2 shadow-lg">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5 text-primary" />
+          <Card className="border-2 shadow-lg overflow-hidden">
+            <CardHeader className="overflow-hidden">
+              <div className="flex items-center justify-between overflow-hidden">
+                <CardTitle className="flex items-center gap-2 truncate">
+                  <MessageCircle className="h-5 w-5 text-primary flex-shrink-0" />
                   Yorumlar
                 </CardTitle>
-                <Badge variant="secondary">{comments.length}</Badge>
+                <Badge variant="secondary" className="flex-shrink-0">{comments.length}</Badge>
               </div>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 overflow-hidden">
               <AnimatePresence mode="popLayout">
                 {comments.length > 0 ? (
                   <div className="space-y-4 max-h-96 overflow-y-auto">
@@ -333,22 +339,22 @@ const TaskDetail = () => {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 20 }}
                         transition={{ delay: index * 0.05 }}
-                        className="flex gap-3 p-4 bg-muted/50 rounded-xl border border-border hover:shadow-md transition-shadow"
+                        className="flex gap-3 p-4 bg-muted/50 rounded-xl border border-border hover:shadow-md transition-shadow overflow-hidden"
                       >
-                        <Avatar className="w-10 h-10">
+                        <Avatar className="w-10 h-10 flex-shrink-0">
                           <AvatarImage src={profiles[comment.user_id]?.avatar_url || undefined} />
                           <AvatarFallback>{profiles[comment.user_id]?.display_name?.[0] || '?'}</AvatarFallback>
                         </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-semibold text-sm">
+                        <div className="flex-1 min-w-0 overflow-hidden">
+                          <div className="flex items-center gap-2 mb-1 overflow-hidden">
+                            <span className="font-semibold text-sm truncate">
                               {profiles[comment.user_id]?.display_name || 'Yükleniyor...'}
                             </span>
-                            <span className="text-xs text-muted-foreground">
+                            <span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0">
                               {format(parseISO(comment.created_at), "d MMM, HH:mm", { locale: tr })}
                             </span>
                           </div>
-                          <p className="text-sm leading-relaxed">{comment.comment}</p>
+                          <p className="text-sm leading-relaxed break-words whitespace-pre-wrap">{comment.comment}</p>
                         </div>
                       </motion.div>
                     ))}
