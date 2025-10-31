@@ -113,29 +113,32 @@ const Tasks = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4 md:p-8 pb-24 md:pb-8">
-      <div className="mx-auto max-w-7xl space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-3 md:p-8 pb-24 md:pb-8">
+      <div className="mx-auto max-w-7xl space-y-4 md:space-y-6">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="space-y-4"
         >
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent flex items-center gap-2">
-                <ListTodo className="h-8 w-8 text-primary" />
-                Görevler
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent flex items-center gap-2">
+                <ListTodo className="h-6 w-6 md:h-8 md:w-8 text-primary flex-shrink-0" />
+                <span className="truncate">Görevler</span>
               </h1>
-              <p className="text-muted-foreground mt-1">Aile görevlerinizi yönetin ve takip edin</p>
+              <p className="text-sm md:text-base text-muted-foreground mt-1">Aile görevlerinizi yönetin</p>
             </div>
-            <div className="flex gap-2">
-              <Link to="/tasks/new">
+            <div className="flex gap-2 flex-shrink-0">
+              <Link to="/tasks/new" className="hidden md:block">
                 <Button className="shadow-lg hover:shadow-xl transition-shadow">
                   <Plus className="mr-2 h-4 w-4" />
                   Yeni Görev
                 </Button>
               </Link>
-              <Button variant="outline" onClick={signOut}>
+              <Button variant="outline" size="icon" onClick={signOut} className="md:hidden">
+                <LogOut className="h-5 w-5" />
+              </Button>
+              <Button variant="outline" onClick={signOut} className="hidden md:flex">
                 <LogOut className="mr-2 h-4 w-4" />
                 Çıkış Yap
               </Button>
@@ -157,25 +160,25 @@ const Tasks = () => {
           transition={{ delay: 0.1 }}
         >
           <Card className="border-2 shadow-lg bg-gradient-to-r from-background to-muted/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Filter className="h-5 w-5" />
+            <CardHeader className="pb-3 md:pb-6">
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <Filter className="h-4 w-4 md:h-5 md:w-5" />
                 Filtreler
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-4 md:flex-row">
+            <CardContent className="pt-0">
+              <div className="flex flex-col gap-3 md:gap-4 md:flex-row">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="🔍 Görev ara..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 border-2"
+                    className="pl-9 border-2 h-11 md:h-10 text-base md:text-sm"
                   />
                 </div>
                 <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as TaskStatus | 'all')}>
-                  <SelectTrigger className="w-full md:w-[180px] border-2">
+                  <SelectTrigger className="w-full md:w-[180px] border-2 h-11 md:h-10 text-base md:text-sm">
                     <SelectValue placeholder="Durum" />
                   </SelectTrigger>
                   <SelectContent>
@@ -186,7 +189,7 @@ const Tasks = () => {
                   </SelectContent>
                 </Select>
                 <Select value={priorityFilter} onValueChange={(v) => setPriorityFilter(v as TaskPriority | 'all')}>
-                  <SelectTrigger className="w-full md:w-[180px] border-2">
+                  <SelectTrigger className="w-full md:w-[180px] border-2 h-11 md:h-10 text-base md:text-sm">
                     <SelectValue placeholder="Öncelik" />
                   </SelectTrigger>
                   <SelectContent>
@@ -229,7 +232,7 @@ const Tasks = () => {
               </Card>
             </motion.div>
           ) : (
-            <div className="grid gap-4">
+            <div className="grid gap-3 md:gap-4">
               {filteredTasks.map((task, index) => (
                 <motion.div
                   key={task.id}
@@ -240,8 +243,8 @@ const Tasks = () => {
                   layout
                 >
                   <Link to={`/tasks/${task.id}`}>
-                    <Card className="border-2 hover:shadow-xl transition-all cursor-pointer group bg-gradient-to-r from-background to-muted/10">
-                      <CardHeader className="flex flex-row items-start justify-between space-y-0 p-6">
+                    <Card className="border-2 hover:shadow-xl transition-all cursor-pointer group bg-gradient-to-r from-background to-muted/10 active:scale-[0.98]">
+                      <CardHeader className="flex flex-row items-start justify-between space-y-0 p-4 md:p-6">
                         <div className="flex items-start gap-4 flex-1 min-w-0">
                           <div className={`
                             flex h-12 w-12 items-center justify-center rounded-xl flex-shrink-0

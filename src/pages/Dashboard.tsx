@@ -150,31 +150,34 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4 md:p-8 pb-24 md:pb-8">
-      <div className="mx-auto max-w-7xl space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-3 md:p-8 pb-24 md:pb-8">
+      <div className="mx-auto max-w-7xl space-y-4 md:space-y-8">
         {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="space-y-4"
         >
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
                 Aile Panosu
               </h1>
-              <p className="text-muted-foreground mt-1">
-                Tekrar hoş geldin, <span className="font-semibold text-foreground">{profile.display_name}</span>! 👋
+              <p className="text-sm md:text-base text-muted-foreground mt-1 truncate">
+                Hoş geldin, <span className="font-semibold text-foreground">{profile.display_name}</span>! 👋
               </p>
             </div>
-            <div className="flex gap-2">
-              <Link to="/tasks/new">
+            <div className="flex gap-2 flex-shrink-0">
+              <Link to="/tasks/new" className="hidden md:block">
                 <Button className="shadow-lg hover:shadow-xl transition-shadow">
                   <Plus className="mr-2 h-4 w-4" />
                   Yeni Görev
                 </Button>
               </Link>
-              <Button variant="outline" onClick={signOut}>
+              <Button variant="outline" size="icon" onClick={signOut} className="md:hidden">
+                <LogOut className="h-5 w-5" />
+              </Button>
+              <Button variant="outline" onClick={signOut} className="hidden md:flex">
                 <LogOut className="mr-2 h-4 w-4" />
                 Çıkış Yap
               </Button>
@@ -191,7 +194,7 @@ const Dashboard = () => {
         </motion.div>
 
         {/* Stats Cards */}
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-3 md:gap-4 md:grid-cols-3">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -304,7 +307,7 @@ const Dashboard = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.5 + index * 0.05 }}
                       onClick={() => navigate(`/tasks/${task.id}`)}
-                      className="flex items-center justify-between rounded-xl border-2 p-4 hover:shadow-md transition-all cursor-pointer bg-gradient-to-r from-background to-muted/20"
+                      className="flex items-center justify-between rounded-xl border-2 p-3 md:p-4 hover:shadow-md transition-all cursor-pointer bg-gradient-to-r from-background to-muted/20 active:scale-[0.98] touch-manipulation"
                     >
                       <div className="flex items-center gap-4 flex-1 min-w-0">
                         <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${

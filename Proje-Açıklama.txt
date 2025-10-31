@@ -1,0 +1,135 @@
+BİRLİK - Proje Analiz Raporu
+
+Proje amacı:
+
+Aile görev yönetimi uygulaması. Görev atama, takip ve ödül sistemi ile aile organizasyonunu kolaylaştırır.
+Ana özellikler
+
+
+1. Kullanıcı yönetimi
+Email/şifre ile kayıt/giriş (Supabase Auth)
+Profil yönetimi (isim, avatar, rol)
+Aile sistemi (oluşturma, davet kodu ile katılma)
+
+2. Görev yönetimi
+Oluşturma: Başlık, açıklama, tarih+saat, öncelik (düşük/orta/yüksek), puan, atama
+Tekrar: Günlük/Haftalık/Aylık
+Durum: Beklemede/Devam ediyor/Tamamlandı
+Filtreleme ve arama
+Detay sayfası, yorum ekleme
+Yetkilendirme: Sadece atanan kişi veya oluşturan tamamlayabilir
+
+3. Takvim görünümü
+Haftalık timeline
+Gün bazında görevler
+Zaman dilimlerine göre (Sabah/Öğleden sonra/Akşam/Gece)
+Heat map (günlere göre görev yoğunluğu)
+
+4. Pano (Dashboard)
+İstatistikler: Toplam görev, tamamlanan, bekleyen
+Bugünün görevleri
+Lider tablosu (puan sıralaması, ilk 3'e podium)
+Realtime güncellemeler
+
+5. Oyunlaştırma
+Puan: Görev tamamlandığında puan kazanma
+Lider tablosu: Aile içi sıralama
+Rozet sistemi (kod var, henüz kullanılmıyor)
+
+6. Bildirimler (Local Notifications)
+Deadline hatırlatmaları: 24 saat, 2 saat, 30 dakika öncesi
+Tekrar eden görevler için otomatik hatırlatma
+Bildirime tıklayınca görev detayına yönlendirme
+Görev silindi/tamamlandı: İlgili bildirimler iptal edilir
+
+7. Realtime
+Supabase Realtime ile anlık güncellemeler
+Görev değişiklikleri, puan güncellemeleri, profil değişiklikleri
+Çoklu cihaz senkronizasyonu
+
+8. Mobil uyumluluk
+Responsive tasarım
+Bottom navigation (mobilde)
+Native APK (Capacitor Android)
+Platform detection (mobil/desktop)
+Touch-optimized UI
+
+
+Teknoloji stack
+Frontend:
+React 18 + TypeScript
+Vite
+Tailwind CSS + shadcn/ui
+Framer Motion (animasyonlar)
+React Query (state)
+React Router (routing)
+Backend:
+Supabase (Auth, Database, Realtime, Storage)
+PostgreSQL (Row Level Security)
+REST API (Supabase Client)
+Mobil:
+Capacitor 7
+Android Native
+
+
+Veritabanı yapısı
+Tablolar:
+families - Aile bilgileri, davet kodları
+profiles - Kullanıcı profilleri (Supabase Auth ile bağlı)
+tasks - Görevler
+task_comments - Görev yorumları
+badges - Kullanıcı rozetleri
+activities - Aktivite logları
+Güvenlik:
+Row Level Security (RLS) aktif
+Aile bazlı veri izolasyonu
+SECURITY DEFINER fonksiyonlar
+
+
+UI/UX özellikleri
+Modern, gradient arka planlar
+Animasyonlar (Framer Motion)
+Dark mode desteği (next-themes)
+Toast bildirimleri (Sonner)
+Responsive grid layout
+Loading states ve empty states
+Avatarlar ve badge'ler
+İkonlar (Lucide React)
+
+
+Sayfalar (11)
+Index - Landing sayfası
+Login - Giriş
+Signup - Kayıt
+Dashboard - Ana pano
+Tasks - Görev listesi
+TaskNew - Yeni görev oluştur
+TaskDetail - Görev detayı
+Calendar - Takvim görünümü
+Family - Aile yönetimi
+Profile - Profil ayarları
+NotFound - 404 sayfası
+
+
+Güçlü yönler
+Tam özellikli: CRUD, realtime, bildirimler
+Güvenli: RLS, authentication, authorization
+Modern UI: Animasyonlar, responsive
+Mobil: Native APK desteği
+Gerçek zamanlı: Anlık senkronizasyon
+Oyunlaştırma: Puan ve lider tablosu
+
+
+İyileştirme alanları
+Push notifications: Şu an sadece local (ileri seviye)
+Rozetler: Kod var, henüz aktif değil
+Analytics: İstatistikler temel seviyede
+Export/Import: PDF/CSV yok
+Çoklu dil: Sadece Türkçe
+
+
+Özet
+BİRLİK, aile görev yönetimi için kullanıma hazır bir uygulama. 
+Modern UI, realtime senkronizasyon, local bildirimler ve mobil desteği ile B2C odaklı. 
+Oyunlaştırma ve puan sistemi ile motivasyon sağlar. 
+Mevcut haliyle MVP seviyesinde; push notifications ve analytics ile ölçeklenebilir.
