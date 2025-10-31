@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,6 +16,7 @@ import { tr } from 'date-fns/locale';
 
 const Tasks = () => {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -234,7 +235,7 @@ const Tasks = () => {
               </Card>
             </motion.div>
           ) : (
-            <div className="grid gap-3 md:gap-4">
+            <div className="space-y-3 md:space-y-4">
               {filteredTasks.map((task, index) => (
                 <motion.div
                   key={task.id}
@@ -243,78 +244,74 @@ const Tasks = () => {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ delay: index * 0.05 }}
                   layout
-                  className="w-full"
+                  onClick={() => navigate(`/tasks/${task.id}`)}
+                  className="p-4 md:p-6 rounded-xl border-2 cursor-pointer transition-all hover:shadow-xl active:scale-[0.98] bg-gradient-to-r from-background to-muted/10"
                 >
-                  <Link to={`/tasks/${task.id}`} className="block w-full">
-                    <Card className="border-2 hover:shadow-xl transition-all cursor-pointer group bg-gradient-to-r from-background to-muted/10 active:scale-[0.98] overflow-hidden w-full">
-                      <CardHeader className="flex flex-row items-start justify-between space-y-0 p-4 md:p-6 overflow-hidden">
-                        <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0 overflow-hidden">
-                          <div className={`
-                            flex h-12 w-12 items-center justify-center rounded-xl flex-shrink-0
-                            ${task.status === 'completed' 
-                              ? 'bg-green-100 dark:bg-green-900' 
-                              : task.status === 'in_progress'
-                              ? 'bg-blue-100 dark:bg-blue-900'
-                              : 'bg-gray-100 dark:bg-gray-800'}
-                            group-hover:scale-110 transition-transform
-                          `}>
-                            {getStatusIcon(task.status)}
-                          </div>
-                          <div className="flex-1 min-w-0 overflow-hidden">
-                            <CardTitle className="text-lg md:text-xl mb-1 md:mb-2 truncate group-hover:text-primary transition-colors">
-                              {task.title}
-                            </CardTitle>
-                            {task.description && (
-                              <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 md:line-clamp-2 mb-2 md:mb-3">
-                                {task.description}
-                              </p>
-                            )}
-                            <div className="flex flex-wrap gap-1.5 md:gap-2">
-                              <Badge className={`${getPriorityColor(task.priority)} text-xs md:text-sm whitespace-nowrap`}>
-                                {task.priority === 'high' ? '🔴' : 
-                                 task.priority === 'medium' ? '🟡' : 
-                                 '🟢'}
-                                <span className="hidden md:inline ml-1">
-                                  {task.priority === 'high' ? 'Yüksek' : 
-                                   task.priority === 'medium' ? 'Orta' : 
-                                   'Düşük'}
-                                </span>
-                              </Badge>
-                              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs md:text-sm whitespace-nowrap">
-                                ⚡ {task.points}
-                              </Badge>
-                              {task.due_date && (
-                                <Badge variant="secondary" className="text-xs md:text-sm whitespace-nowrap max-w-[120px] md:max-w-none truncate">
-                                  📅 {format(new Date(task.due_date), 'd MMM', { locale: tr })}
-                                  <span className="hidden md:inline">
-                                    {' '}{format(new Date(task.due_date), 'HH:mm')}
-                                  </span>
-                                </Badge>
-                              )}
-                              {task.status === 'completed' && (
-                                <Badge className="bg-green-500 text-white text-xs md:text-sm whitespace-nowrap">
-                                  ✅ <span className="hidden md:inline">Tamamlandı</span>
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        {canCompleteTask(task) && (
-                          <Button
-                            size="sm"
-                            className="shadow-md hover:shadow-lg transition-shadow flex-shrink-0"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleComplete(task.id, task.points);
-                            }}
-                          >
-                            <CheckCircle2 className="mr-1 h-4 w-4" />
-                            Tamamla
-                          </Button>
+                  <div className="flex items-start justify-between gap-3 md:gap-4">
+                    <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0">
+                      <div className={`
+                        flex h-12 w-12 items-center justify-center rounded-xl flex-shrink-0
+                        ${task.status === 'completed' 
+                          ? 'bg-green-100 dark:bg-green-900' 
+                          : task.status === 'in_progress'
+                          ? 'bg-blue-100 dark:bg-blue-900'
+                          : 'bg-gray-100 dark:bg-gray-800'}
+                      `}>
+                        {getStatusIcon(task.status)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base md:text-lg font-semibold mb-1 truncate">
+                          {task.title}
+                        </h3>
+                        {task.description && (
+                          <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 md:line-clamp-2 mb-2">
+                            {task.description}
+                          </p>
                         )}
-                      </CardHeader>
-                    </Card>
-                  </Link>
+                        <div className="flex flex-wrap gap-1.5">
+                          <Badge className={`${getPriorityColor(task.priority)} text-xs whitespace-nowrap`}>
+                            {task.priority === 'high' ? '🔴' : 
+                             task.priority === 'medium' ? '🟡' : 
+                             '🟢'}
+                            <span className="hidden md:inline ml-1">
+                              {task.priority === 'high' ? 'Yüksek' : 
+                               task.priority === 'medium' ? 'Orta' : 
+                               'Düşük'}
+                            </span>
+                          </Badge>
+                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs whitespace-nowrap">
+                            ⚡ {task.points}
+                          </Badge>
+                          {task.due_date && (
+                            <Badge variant="secondary" className="text-xs whitespace-nowrap">
+                              📅 {format(new Date(task.due_date), 'd MMM', { locale: tr })}
+                              <span className="hidden md:inline">
+                                {' '}{format(new Date(task.due_date), 'HH:mm')}
+                              </span>
+                            </Badge>
+                          )}
+                          {task.status === 'completed' && (
+                            <Badge className="bg-green-500 text-white text-xs whitespace-nowrap">
+                              ✅ <span className="hidden md:inline">Tamamlandı</span>
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    {canCompleteTask(task) && (
+                      <Button
+                        size="sm"
+                        className="shadow-md hover:shadow-lg transition-shadow flex-shrink-0 hidden md:flex"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleComplete(task.id, task.points);
+                        }}
+                      >
+                        <CheckCircle2 className="mr-1 h-4 w-4" />
+                        Tamamla
+                      </Button>
+                    )}
+                  </div>
                 </motion.div>
               ))}
             </div>

@@ -303,44 +303,48 @@ const Dashboard = () => {
                     <p className="text-sm text-muted-foreground mt-1">Harika iş! 🎉</p>
                   </div>
                 ) : (
-                  todayTasks.map((task, index) => (
-                    <motion.div
-                      key={task.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.5 + index * 0.05 }}
-                      onClick={() => navigate(`/tasks/${task.id}`)}
-                      className="flex items-center justify-between rounded-xl border-2 p-3 md:p-4 hover:shadow-md transition-all cursor-pointer bg-gradient-to-r from-background to-muted/20 active:scale-[0.98] touch-manipulation overflow-hidden w-full"
-                    >
-                      <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0 overflow-hidden">
-                        <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${
-                          task.status === 'completed' 
-                            ? 'bg-green-100 dark:bg-green-900' 
-                            : 'bg-blue-100 dark:bg-blue-900'
-                        }`}>
-                          {task.status === 'completed' ? (
-                            <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400" />
-                          ) : (
-                            <Clock className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                          )}
+                  <div className="space-y-3">
+                    {todayTasks.map((task, index) => (
+                      <motion.div
+                        key={task.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 + index * 0.05 }}
+                        onClick={() => navigate(`/tasks/${task.id}`)}
+                        className="p-3 md:p-4 rounded-xl border-2 cursor-pointer transition-all hover:shadow-md active:scale-[0.98] bg-gradient-to-r from-background to-muted/20"
+                      >
+                        <div className="flex items-start justify-between gap-3 md:gap-4">
+                          <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0">
+                            <div className={`flex h-12 w-12 items-center justify-center rounded-xl flex-shrink-0 ${
+                              task.status === 'completed' 
+                                ? 'bg-green-100 dark:bg-green-900' 
+                                : 'bg-blue-100 dark:bg-blue-900'
+                            }`}>
+                              {task.status === 'completed' ? (
+                                <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400" />
+                              ) : (
+                                <Clock className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold text-sm md:text-base truncate mb-1">{task.title}</h3>
+                              {task.description && (
+                                <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 mb-2">{task.description}</p>
+                              )}
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <Badge className={`${getPriorityColor(task.priority)} text-xs whitespace-nowrap`}>
+                                  {task.priority === 'high' ? '🔴' : task.priority === 'medium' ? '🟡' : '🟢'}
+                                </Badge>
+                                <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs whitespace-nowrap">
+                                  ⚡ {task.points}
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex-1 min-w-0 overflow-hidden">
-                          <h3 className="font-semibold text-sm md:text-base truncate">{task.title}</h3>
-                          {task.description && (
-                            <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 truncate">{task.description}</p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1.5 md:gap-2 flex-shrink-0">
-                        <Badge className={`${getPriorityColor(task.priority)} text-xs md:text-sm whitespace-nowrap`}>
-                          {task.priority === 'high' ? '🔴' : task.priority === 'medium' ? '🟡' : '🟢'}
-                        </Badge>
-                        <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs md:text-sm whitespace-nowrap">
-                          ⚡ {task.points}
-                        </Badge>
-                      </div>
-                    </motion.div>
-                  ))
+                      </motion.div>
+                    ))}
+                  </div>
                 )}
               </CardContent>
             </Card>
