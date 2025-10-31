@@ -36,6 +36,14 @@ rules:
       - Do not duplicate logic unnecessarily; abstract shared behavior into hooks or components.
       - Store platform-specific constants, assets, and layouts separately.
 
+  - Critical: Responsive Tailwind classes are PERMANENT and MUST be preserved:
+      - NEVER remove `md:`, `lg:`, `xl:` breakpoint classes when making changes
+      - NEVER remove mobile-first classes: `overflow-x-hidden`, `min-w-0`, `truncate`, `break-words`, `whitespace-nowrap`
+      - When adding new UI elements, ALWAYS include responsive variants (e.g., `p-3 md:p-4`, `text-sm md:text-base`)
+      - Before committing, verify that mobile layouts remain intact with responsive breakpoints
+      - If modifying existing responsive code, maintain the mobile-first pattern (mobile classes without prefix, desktop with `md:` prefix)
+      - These classes prevent horizontal scrolling and ensure native mobile UX - they are NOT optional
+
   - Mobile-only updates:
       - Place mobile enhancements in a dedicated branch (`mobile-adjustments`).
       - Ensure that merging new web updates does not override mobile UX changes.
