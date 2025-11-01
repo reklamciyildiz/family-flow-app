@@ -201,19 +201,19 @@ const Dashboard = () => {
             transition={{ delay: 0.1 }}
             className="w-full"
           >
-            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 w-full">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Bugünün Görevleri</CardTitle>
-                <div className="p-2 bg-blue-500 rounded-lg">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 w-full h-full">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm md:text-base font-medium">Bugünün Görevleri</CardTitle>
+                <div className="p-2 bg-blue-500 rounded-lg flex-shrink-0">
                   <Calendar className="h-4 w-4 text-white" />
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-blue-700 dark:text-blue-300">{todayTasks.length}</div>
-                <p className="text-xs text-muted-foreground mt-1">
+              <CardContent className="space-y-2">
+                <div className="text-2xl md:text-3xl font-bold text-blue-700 dark:text-blue-300">{todayTasks.length}</div>
+                <p className="text-xs text-muted-foreground">
                   {todayTasks.filter(t => t.status === 'completed').length} tamamlandı ✓
                 </p>
-                <Progress value={todayTasks.length > 0 ? (todayTasks.filter(t => t.status === 'completed').length / todayTasks.length) * 100 : 0} className="mt-3" />
+                <Progress value={todayTasks.length > 0 ? (todayTasks.filter(t => t.status === 'completed').length / todayTasks.length) * 100 : 0} className="mt-2" />
               </CardContent>
             </Card>
           </motion.div>
@@ -224,19 +224,19 @@ const Dashboard = () => {
             transition={{ delay: 0.2 }}
             className="w-full"
           >
-            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 w-full">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Tamamlanma Oranı</CardTitle>
-                <div className="p-2 bg-green-500 rounded-lg">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 w-full h-full">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm md:text-base font-medium">Tamamlanma Oranı</CardTitle>
+                <div className="p-2 bg-green-500 rounded-lg flex-shrink-0">
                   <Target className="h-4 w-4 text-white" />
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-green-700 dark:text-green-300">{Math.round(completionRate)}%</div>
-                <p className="text-xs text-muted-foreground mt-1">
+              <CardContent className="space-y-2">
+                <div className="text-2xl md:text-3xl font-bold text-green-700 dark:text-green-300">{Math.round(completionRate)}%</div>
+                <p className="text-xs text-muted-foreground">
                   {completedTasks} / {tasks.length} görev
                 </p>
-                <Progress value={completionRate} className="mt-3" />
+                <Progress value={completionRate} className="mt-2" />
               </CardContent>
             </Card>
           </motion.div>
@@ -247,19 +247,19 @@ const Dashboard = () => {
             transition={{ delay: 0.3 }}
             className="w-full"
           >
-            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 w-full">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Aile Üyeleri</CardTitle>
-                <div className="p-2 bg-purple-500 rounded-lg">
+            <Card className="border-2 hover:shadow-lg transition-shadow bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 w-full h-full">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm md:text-base font-medium">Aile Üyeleri</CardTitle>
+                <div className="p-2 bg-purple-500 rounded-lg flex-shrink-0">
                   <Users className="h-4 w-4 text-white" />
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-purple-700 dark:text-purple-300">{familyMembers.length}</div>
-                <p className="text-xs text-muted-foreground mt-1">Aktif üye 👥</p>
-                <div className="flex -space-x-2 mt-3">
+              <CardContent className="space-y-2">
+                <div className="text-2xl md:text-3xl font-bold text-purple-700 dark:text-purple-300">{familyMembers.length}</div>
+                <p className="text-xs text-muted-foreground">Aktif üye 👥</p>
+                <div className="flex -space-x-2 mt-2">
                   {familyMembers.slice(0, 5).map((member) => (
-                    <Avatar key={member.id} className="w-6 h-6 border-2 border-background">
+                    <Avatar key={member.id} className="w-7 h-7 md:w-8 md:h-8 border-2 border-background">
                       <AvatarImage src={member.avatar_url || undefined} />
                       <AvatarFallback className="text-xs">{member.display_name[0]}</AvatarFallback>
                     </Avatar>
@@ -364,7 +364,7 @@ const Dashboard = () => {
                 </CardTitle>
                 <CardDescription>Bu haftanın şampiyonları 🏆</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-2 md:space-y-3">
                 {familyMembers.map((member, index) => (
                   <motion.div
                     key={member.id}
@@ -372,7 +372,7 @@ const Dashboard = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.6 + index * 0.1 }}
                     className={`
-                      flex items-center gap-4 p-3 rounded-xl transition-all
+                      flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl transition-all
                       ${index === 0 ? 'bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900 dark:to-yellow-900 border-2 border-amber-300 shadow-md' : 
                         index === 1 ? 'bg-gradient-to-r from-gray-100 to-slate-100 dark:from-gray-800 dark:to-slate-800 border border-gray-300' :
                         index === 2 ? 'bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900 dark:to-red-900 border border-orange-300' :
@@ -380,7 +380,7 @@ const Dashboard = () => {
                     `}
                   >
                     <div className={`
-                      flex h-10 w-10 items-center justify-center rounded-full font-bold text-lg
+                      flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full font-bold text-base md:text-lg flex-shrink-0
                       ${index === 0 ? 'bg-amber-500 text-white' :
                         index === 1 ? 'bg-gray-400 text-white' :
                         index === 2 ? 'bg-orange-500 text-white' :
@@ -388,16 +388,16 @@ const Dashboard = () => {
                     `}>
                       {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
                     </div>
-                    <Avatar className={index < 3 ? 'ring-2 ring-offset-2 ring-amber-400' : ''}>
+                    <Avatar className={`w-9 h-9 md:w-10 md:h-10 flex-shrink-0 ${index < 3 ? 'ring-2 ring-offset-1 md:ring-offset-2 ring-amber-400' : ''}`}>
                       <AvatarImage src={member.avatar_url || undefined} />
-                      <AvatarFallback className="font-bold">{member.display_name[0]}</AvatarFallback>
+                      <AvatarFallback className="font-bold text-sm">{member.display_name[0]}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold truncate">{member.display_name}</p>
-                      <p className="text-xs text-muted-foreground">{member.role}</p>
+                      <p className="font-semibold text-sm md:text-base truncate">{member.display_name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{member.role}</p>
                     </div>
-                    <div className="flex flex-col items-end">
-                      <span className={`font-bold text-lg ${
+                    <div className="flex flex-col items-end flex-shrink-0">
+                      <span className={`font-bold text-base md:text-lg ${
                         index === 0 ? 'text-amber-600 dark:text-amber-400' : 'text-primary'
                       }`}>
                         {member.points}
