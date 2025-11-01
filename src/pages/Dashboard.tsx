@@ -270,40 +270,40 @@ const Dashboard = () => {
           </motion.div>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-4 md:gap-6 lg:gap-8 lg:grid-cols-3">
           {/* Today's Tasks */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="lg:col-span-2"
+            className="lg:col-span-2 w-full"
           >
-            <Card className="border-2 shadow-lg">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <Zap className="h-5 w-5 text-amber-500" />
-                      Bugünün Görevleri
+            <Card className="border-2 shadow-lg h-full w-full">
+              <CardHeader className="pb-3 md:pb-6">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+                      <Zap className="h-5 w-5 md:h-6 md:w-6 text-amber-500 flex-shrink-0" />
+                      <span className="truncate">Bugünün Görevleri</span>
                     </CardTitle>
-                    <CardDescription>Bugün teslim edilecek görevler</CardDescription>
+                    <CardDescription className="text-xs md:text-sm mt-1">Bugün teslim edilecek görevler</CardDescription>
                   </div>
-                  <Badge variant="secondary" className="text-lg px-3">
+                  <Badge variant="secondary" className="text-base md:text-lg px-2 md:px-3 flex-shrink-0">
                     {todayTasks.length}
                   </Badge>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-2 md:space-y-3">
                 {todayTasks.length === 0 ? (
-                  <div className="text-center py-12">
-                    <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                      <CheckCircle2 className="h-8 w-8 text-muted-foreground" />
+                  <div className="text-center py-8 md:py-12">
+                    <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-muted rounded-full flex items-center justify-center mb-3 md:mb-4">
+                      <CheckCircle2 className="h-6 w-6 md:h-8 md:w-8 text-muted-foreground" />
                     </div>
-                    <p className="text-muted-foreground">Bugün teslim edilecek görev yok</p>
-                    <p className="text-sm text-muted-foreground mt-1">Harika iş! 🎉</p>
+                    <p className="text-sm md:text-base text-muted-foreground">Bugün teslim edilecek görev yok</p>
+                    <p className="text-xs md:text-sm text-muted-foreground mt-1">Harika iş! 🎉</p>
                   </div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-2 md:space-y-3">
                     {todayTasks.map((task, index) => (
                       <motion.div
                         key={task.id}
@@ -355,14 +355,15 @@ const Dashboard = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
+            className="w-full"
           >
-            <Card className="border-2 shadow-lg bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Trophy className="h-6 w-6 text-amber-500" />
-                  Lider Tablosu
+            <Card className="border-2 shadow-lg bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950 h-full w-full">
+              <CardHeader className="pb-3 md:pb-6">
+                <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+                  <Trophy className="h-5 w-5 md:h-6 md:w-6 text-amber-500 flex-shrink-0" />
+                  <span className="truncate">Lider Tablosu</span>
                 </CardTitle>
-                <CardDescription>Bu haftanın şampiyonları 🏆</CardDescription>
+                <CardDescription className="text-xs md:text-sm mt-1">Bu haftanın şampiyonları 🏆</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2 md:space-y-3">
                 {familyMembers.map((member, index) => (
@@ -408,9 +409,9 @@ const Dashboard = () => {
                 ))}
                 
                 {familyMembers.length === 0 && (
-                  <div className="text-center py-8">
-                    <Award className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-                    <p className="text-sm text-muted-foreground">Henüz üye yok</p>
+                  <div className="text-center py-6 md:py-8">
+                    <Award className="h-10 w-10 md:h-12 md:w-12 mx-auto text-muted-foreground mb-2" />
+                    <p className="text-xs md:text-sm text-muted-foreground">Henüz üye yok</p>
                   </div>
                 )}
               </CardContent>
