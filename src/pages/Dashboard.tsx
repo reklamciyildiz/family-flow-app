@@ -311,34 +311,32 @@ const Dashboard = () => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.5 + index * 0.05 }}
                         onClick={() => navigate(`/tasks/${task.id}`)}
-                        className="p-3 md:p-4 rounded-xl border-2 cursor-pointer transition-all hover:shadow-md active:scale-[0.98] bg-gradient-to-r from-background to-muted/20"
+                        className="p-3 md:p-4 rounded-xl border-2 cursor-pointer transition-all hover:shadow-md active:scale-[0.98] bg-gradient-to-r from-background to-muted/20 overflow-hidden"
                       >
-                        <div className="flex items-start justify-between gap-3 md:gap-4">
-                          <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0">
-                            <div className={`flex h-12 w-12 items-center justify-center rounded-xl flex-shrink-0 ${
-                              task.status === 'completed' 
-                                ? 'bg-green-100 dark:bg-green-900' 
-                                : 'bg-blue-100 dark:bg-blue-900'
-                            }`}>
-                              {task.status === 'completed' ? (
-                                <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400" />
-                              ) : (
-                                <Clock className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h3 className="font-semibold text-sm md:text-base truncate mb-1">{task.title}</h3>
-                              {task.description && (
-                                <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 mb-2">{task.description}</p>
-                              )}
-                              <div className="flex items-center gap-1.5 flex-wrap">
-                                <Badge className={`${getPriorityColor(task.priority)} text-xs whitespace-nowrap`}>
-                                  {task.priority === 'high' ? '🔴' : task.priority === 'medium' ? '🟡' : '🟢'}
-                                </Badge>
-                                <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs whitespace-nowrap">
-                                  ⚡ {task.points}
-                                </Badge>
-                              </div>
+                        <div className="flex items-start gap-3 md:gap-4 overflow-hidden">
+                          <div className={`flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl flex-shrink-0 ${
+                            task.status === 'completed' 
+                              ? 'bg-green-100 dark:bg-green-900' 
+                              : 'bg-blue-100 dark:bg-blue-900'
+                          }`}>
+                            {task.status === 'completed' ? (
+                              <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6 text-green-600 dark:text-green-400" />
+                            ) : (
+                              <Clock className="h-5 w-5 md:h-6 md:w-6 text-blue-600 dark:text-blue-400" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0 overflow-hidden">
+                            <h3 className="font-semibold text-sm md:text-base truncate mb-1">{task.title}</h3>
+                            {task.description && (
+                              <p className="text-xs md:text-sm text-muted-foreground truncate mb-2">{task.description}</p>
+                            )}
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <Badge className={`${getPriorityColor(task.priority)} text-xs whitespace-nowrap`}>
+                                {task.priority === 'high' ? '🔴' : task.priority === 'medium' ? '🟡' : '🟢'}
+                              </Badge>
+                              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs whitespace-nowrap">
+                                ⚡ {task.points}
+                              </Badge>
                             </div>
                           </div>
                         </div>
@@ -373,7 +371,7 @@ const Dashboard = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.6 + index * 0.1 }}
                     className={`
-                      flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl transition-all
+                      flex items-center gap-2 md:gap-3 p-2.5 md:p-3 lg:p-4 rounded-xl transition-all overflow-hidden
                       ${index === 0 ? 'bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900 dark:to-yellow-900 border-2 border-amber-300 shadow-md' : 
                         index === 1 ? 'bg-gradient-to-r from-gray-100 to-slate-100 dark:from-gray-800 dark:to-slate-800 border border-gray-300' :
                         index === 2 ? 'bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900 dark:to-red-900 border border-orange-300' :
@@ -381,7 +379,7 @@ const Dashboard = () => {
                     `}
                   >
                     <div className={`
-                      flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full font-bold text-base md:text-lg flex-shrink-0
+                      flex h-8 w-8 md:h-9 md:w-9 lg:h-10 lg:w-10 items-center justify-center rounded-full font-bold text-sm md:text-base lg:text-lg flex-shrink-0
                       ${index === 0 ? 'bg-amber-500 text-white' :
                         index === 1 ? 'bg-gray-400 text-white' :
                         index === 2 ? 'bg-orange-500 text-white' :
@@ -389,21 +387,21 @@ const Dashboard = () => {
                     `}>
                       {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
                     </div>
-                    <Avatar className={`w-9 h-9 md:w-10 md:h-10 flex-shrink-0 ${index < 3 ? 'ring-2 ring-offset-1 md:ring-offset-2 ring-amber-400' : ''}`}>
+                    <Avatar className={`w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 flex-shrink-0 ${index < 3 ? 'ring-2 ring-offset-1 ring-amber-400' : ''}`}>
                       <AvatarImage src={member.avatar_url || undefined} />
-                      <AvatarFallback className="font-bold text-sm">{member.display_name[0]}</AvatarFallback>
+                      <AvatarFallback className="font-bold text-xs md:text-sm">{member.display_name[0]}</AvatarFallback>
                     </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm md:text-base truncate">{member.display_name}</p>
-                      <p className="text-xs text-muted-foreground truncate">{member.role}</p>
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                      <p className="font-semibold text-xs md:text-sm lg:text-base truncate">{member.display_name}</p>
+                      <p className="text-[10px] md:text-xs text-muted-foreground truncate">{member.role}</p>
                     </div>
-                    <div className="flex flex-col items-end flex-shrink-0">
-                      <span className={`font-bold text-base md:text-lg ${
+                    <div className="flex flex-col items-end flex-shrink-0 min-w-[45px] md:min-w-[50px]">
+                      <span className={`font-bold text-sm md:text-base lg:text-lg whitespace-nowrap ${
                         index === 0 ? 'text-amber-600 dark:text-amber-400' : 'text-primary'
                       }`}>
                         {member.points}
                       </span>
-                      <span className="text-xs text-muted-foreground">puan</span>
+                      <span className="text-[10px] md:text-xs text-muted-foreground whitespace-nowrap">puan</span>
                     </div>
                   </motion.div>
                 ))}
