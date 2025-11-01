@@ -17,24 +17,10 @@ const Signup = () => {
   const [checkingSession, setCheckingSession] = useState(true);
   const navigate = useNavigate();
 
-  // Otomatik session kontrolü - Sayfa yüklendiğinde
+  // Otomatik session kontrolü - Index sayfası zaten kontrol ediyor, burada gerek yok
   useEffect(() => {
-    const checkExistingSession = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-          // Kullanıcı zaten giriş yapmış, dashboard'a yönlendir
-          navigate('/dashboard', { replace: true });
-        }
-      } catch (error) {
-        console.error('Session kontrolü hatası:', error);
-      } finally {
-        setCheckingSession(false);
-      }
-    };
-
-    checkExistingSession();
-  }, [navigate]);
+    setCheckingSession(false);
+  }, []);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();

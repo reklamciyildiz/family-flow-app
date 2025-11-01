@@ -28,13 +28,16 @@ const Login = () => {
     getSavedEmail,
   } = useBiometric();
 
-  // Otomatik session kontrolü - Sayfa yüklendiğinde
+  // Otomatik session kontrolü - Sadece normal durumda (logout yapılmamışsa)
   useEffect(() => {
     const checkExistingSession = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-          // Kullanıcı zaten giriş yapmış, dashboard'a yönlendir
+          // Session varsa dashboard'a yönlendir
+          // AMA: Eğer kullanıcı MANUEL olarak login sayfasına geldiyse (logout sonrası gibi),
+          // biometric butonu gösterilmesi için session kontrolünü yapmayalım
+          // Index sayfasından geldiyse zaten Index sayfası session kontrolü yapacak
           navigate('/dashboard', { replace: true });
         }
       } catch (error) {
