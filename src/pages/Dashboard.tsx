@@ -276,24 +276,24 @@ const Dashboard = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="lg:col-span-2 w-full"
+            className="lg:col-span-2 w-full overflow-hidden"
           >
-            <Card className="border-2 shadow-lg h-full w-full">
-              <CardHeader className="pb-3 md:pb-6">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+            <Card className="border-2 shadow-lg h-full w-full overflow-hidden">
+              <CardHeader className="pb-3 md:pb-6 overflow-hidden">
+                <div className="flex items-center justify-between gap-3 overflow-hidden">
+                  <div className="flex-1 min-w-0 overflow-hidden">
+                    <CardTitle className="flex items-center gap-2 text-lg md:text-xl overflow-hidden">
                       <Zap className="h-5 w-5 md:h-6 md:w-6 text-amber-500 flex-shrink-0" />
                       <span className="truncate">Bugünün Görevleri</span>
                     </CardTitle>
-                    <CardDescription className="text-xs md:text-sm mt-1">Bugün teslim edilecek görevler</CardDescription>
+                    <CardDescription className="text-xs md:text-sm mt-1 truncate">Bugün teslim edilecek görevler</CardDescription>
                   </div>
                   <Badge variant="secondary" className="text-base md:text-lg px-2 md:px-3 flex-shrink-0">
                     {todayTasks.length}
                   </Badge>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-2 md:space-y-3">
+              <CardContent className="space-y-2 md:space-y-3 overflow-hidden">
                 {todayTasks.length === 0 ? (
                   <div className="text-center py-8 md:py-12">
                     <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-muted rounded-full flex items-center justify-center mb-3 md:mb-4">
@@ -353,17 +353,17 @@ const Dashboard = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
-            className="w-full"
+            className="w-full overflow-hidden"
           >
-            <Card className="border-2 shadow-lg bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950 h-full w-full">
-              <CardHeader className="pb-3 md:pb-6">
-                <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+            <Card className="border-2 shadow-lg bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950 h-full w-full overflow-hidden">
+              <CardHeader className="pb-3 md:pb-6 overflow-hidden">
+                <CardTitle className="flex items-center gap-2 text-lg md:text-xl overflow-hidden">
                   <Trophy className="h-5 w-5 md:h-6 md:w-6 text-amber-500 flex-shrink-0" />
                   <span className="truncate">Lider Tablosu</span>
                 </CardTitle>
-                <CardDescription className="text-xs md:text-sm mt-1">Bu haftanın şampiyonları 🏆</CardDescription>
+                <CardDescription className="text-xs md:text-sm mt-1 truncate">Bu haftanın şampiyonları 🏆</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-2 md:space-y-3">
+              <CardContent className="space-y-2 md:space-y-3 overflow-hidden">
                 {familyMembers.map((member, index) => (
                   <motion.div
                     key={member.id}
