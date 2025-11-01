@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface StoredCredentials {
   email: string;
+  password: string;
   timestamp: number;
 }
 
@@ -43,7 +44,7 @@ export const useBiometric = () => {
   }, [isMobile]);
 
   // Biometric ile giriş
-  const authenticateWithBiometric = useCallback(async (): Promise<{ success: boolean; email?: string }> => {
+  const authenticateWithBiometric = useCallback(async (): Promise<{ success: boolean; email?: string; password?: string }> => {
     if (!isMobile || !isAvailable || !isEnabled) {
       return { success: false };
     }
@@ -68,8 +69,8 @@ export const useBiometric = () => {
         androidConfirmationRequired: false,
       });
 
-      // Biometric başarılı, email döndür
-      return { success: true, email: credentials.email };
+      // Biometric başarılı, email ve password döndür
+      return { success: true, email: credentials.email, password: credentials.password };
     } catch (error: any) {
       console.error('Biometric authentication hatası:', error);
       
@@ -83,7 +84,7 @@ export const useBiometric = () => {
   }, [isMobile, isAvailable, isEnabled]);
 
   // Biometric'i etkinleştir ve kullanıcı bilgilerini kaydet
-  const enableBiometric = useCallback(async (email: string): Promise<boolean> => {
+  const enableBiometric = useCallback(async (email: string, password: string): Promise<boolean> => {
     if (!isMobile || !isAvailable) {
       return false;
     }
@@ -100,9 +101,10 @@ export const useBiometric = () => {
         androidConfirmationRequired: false,
       });
 
-      // Başarılı, kullanıcı bilgilerini kaydet
+      // Başarılı, kullanıcı bilgilerini kaydet (email + password)
       const credentials: StoredCredentials = {
         email,
+        password,
         timestamp: Date.now(),
       };
 

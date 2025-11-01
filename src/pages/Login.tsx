@@ -25,6 +25,7 @@ const Login = () => {
     isMobile,
     authenticateWithBiometric,
     enableBiometric,
+    disableBiometric,
     getSavedEmail,
   } = useBiometric();
 
@@ -67,20 +68,34 @@ const Login = () => {
     try {
       const result = await authenticateWithBiometric();
       
-      if (!result.success || !result.email) {
+      if (!result.success || !result.email || !result.password) {
         toast.error('Biyometrik doğrulama başarısız');
         setLoading(false);
         return;
       }
 
-      // Email'i al ve session'ı kontrol et
-      const { data: { session }, error } = await supabase.auth.getSession();
+      // Önce session kontrolü yap
+      const { data: { session } } = await supabase.auth.getSession();
       
       if (session) {
+        // Session varsa direkt dashboard'a git
         toast.success('Hoş geldiniz! 👋');
         navigate('/dashboard');
       } else {
-        toast.error('Lütfen tekrar giriş yapın');
+        // Session yoksa, kayıtlı email ve password ile otomatik giriş yap
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: result.email,
+          password: result.password,
+        });
+
+        if (signInError) {
+          toast.error('Giriş başarısız. Lütfen email ve şifre ile giriş yapın.');
+          // Başarısız olursa, biometric kaydını temizle (şifre değişmiş olabilir)
+          disableBiometric();
+        } else {
+          toast.success('Hoş geldiniz! 👋');
+          navigate('/dashboard');
+        }
       }
     } catch (error: any) {
       console.error('Biometric login hatası:', error);
@@ -120,7 +135,8 @@ const Login = () => {
   // Biometric kayıt dialog'unda "Evet" dediğinde
   const handleEnableBiometric = async () => {
     setShowBiometricDialog(false);
-    const success = await enableBiometric(email);
+    // Şifreyi de kaydetmek için password state'i gerekli
+    const success = await enableBiometric(email, password);
     
     if (success) {
       toast.success('Biyometrik giriş etkinleştirildi! 🎉');
